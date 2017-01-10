@@ -28,7 +28,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jTabbedPane1" pref="0" max="32767" attributes="0"/>
-                  <Component id="jButton1" pref="144" max="32767" attributes="0"/>
+                  <Component id="actionButton" pref="144" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -41,7 +41,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jTabbedPane1" min="-2" pref="630" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="actionButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -66,17 +66,29 @@
       </Layout>
     </Container>
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jTabbedPane1StateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JComboBox" name="jComboBox1">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
+              <StringArray count="13">
+                <StringItem index="0" value="Single Carbon"/>
+                <StringItem index="1" value="Carbon Chain"/>
+                <StringItem index="2" value="Cyclic Carbon Chain"/>
+                <StringItem index="3" value="Aromatic Carbon Chain"/>
+                <StringItem index="4" value=" "/>
+                <StringItem index="5" value="Hydrogen"/>
+                <StringItem index="6" value="Oxygen"/>
+                <StringItem index="7" value="Nitrogen"/>
+                <StringItem index="8" value=" "/>
+                <StringItem index="9" value="Fluorine"/>
+                <StringItem index="10" value="Chlorine"/>
+                <StringItem index="11" value="Bromine"/>
+                <StringItem index="12" value="Iodine"/>
               </StringArray>
             </Property>
           </Properties>
@@ -116,10 +128,13 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="actionButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
+        <Property name="text" type="java.lang.String" value="Build"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="actionButtonBuild"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

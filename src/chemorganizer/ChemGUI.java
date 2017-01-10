@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package chemorganizer;
 
-/**
- *
- * @author woodm3302
- */
 public class ChemGUI extends javax.swing.JFrame {
 
     /**
@@ -31,7 +23,7 @@ public class ChemGUI extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        actionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,7 +38,13 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGap(0, 700, Short.MAX_VALUE)
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Carbon", "Carbon Chain", "Cyclic Carbon Chain", "Aromatic Carbon Chain", " ", "Hydrogen", "Oxygen", "Nitrogen", " ", "Fluorine", "Chlorine", "Bromine", "Iodine" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -61,7 +59,12 @@ public class ChemGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Draw", jScrollPane1);
 
-        jButton1.setText("jButton1");
+        actionButton.setText("Build");
+        actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonBuild(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,7 +75,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
+                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,7 +85,7 @@ public class ChemGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
+                        .addComponent(actionButton)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -93,6 +96,37 @@ public class ChemGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        if (actionButton.getText().equals("Build")){
+            //Change the action button to draw and listener to the draw action listener
+            
+            actionButton.setText("Draw");
+            actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonDraw(evt);
+            }
+        });
+            
+        } else {
+            //Change the action button to build and listener to the build action listener
+            
+            actionButton.setText("Build");
+            actionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionButtonBuild(evt);
+            }
+        });
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void actionButtonBuild(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonBuild
+        //Action to add molecule to the chain
+    }//GEN-LAST:event_actionButtonBuild
+
+    private void actionButtonDraw(java.awt.event.ActionEvent evt){
+        //Button to draw written molecule
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -128,8 +162,8 @@ public class ChemGUI extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton actionButton;
     private javax.swing.JPanel drawingPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
