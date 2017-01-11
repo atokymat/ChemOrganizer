@@ -4,4 +4,8 @@ TODO:
 
 Putting elements on screen
 
-Click and drag bonds
+Click and drag menu:
+
+bonds
+
+moving molecules
