@@ -1,5 +1,12 @@
 package chemorganizer;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+
 public class ChemGUI extends javax.swing.JFrame {
 
     /**
@@ -20,9 +27,9 @@ public class ChemGUI extends javax.swing.JFrame {
 
         drawingPanel = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jComboBox1 = new javax.swing.JComboBox();
+        selectionBox = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        drawInput = new javax.swing.JTextArea();
         actionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -44,24 +51,24 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Carbon", "Carbon Chain", "Cyclic Carbon Chain", "Aromatic Carbon Chain", " ", "Hydrogen", "Oxygen", "Nitrogen", " ", "Fluorine", "Chlorine", "Bromine", "Iodine" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        selectionBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Carbon", "Carbon Chain", "Cyclic Carbon Chain", "Aromatic Carbon Chain", " ", "Hydrogen", "Oxygen", "Nitrogen", " ", "Fluorine", "Chlorine", "Bromine", "Iodine" }));
+        selectionBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                selectionBoxActionPerformed(evt);
             }
         });
-        jTabbedPane1.addTab("Build", jComboBox1);
+        jTabbedPane1.addTab("Build", selectionBox);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        drawInput.setColumns(20);
+        drawInput.setLineWrap(true);
+        drawInput.setRows(5);
+        jScrollPane1.setViewportView(drawInput);
 
         jTabbedPane1.addTab("Draw", jScrollPane1);
 
         actionButton.setText("Build");
-        actionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
                 actionButtonBuild(evt);
             }
         });
@@ -75,7 +82,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)))
+                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,41 +99,106 @@ public class ChemGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void selectionBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_selectionBoxActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         if (actionButton.getText().equals("Build")){
             //Change the action button to draw and listener to the draw action listener
             
             actionButton.setText("Draw");
-            actionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            actionButton.addMouseListener(new java.awt.event.MouseListener() {
+            public void actionPerformed(java.awt.event.MouseEvent evt) {
                 actionButtonDraw(evt);
-            }
+            }                
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
         });
             
         } else {
             //Change the action button to build and listener to the build action listener
-            
             actionButton.setText("Build");
-            actionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            actionButton.addMouseListener(new java.awt.event.MouseListener() {
+            public void actionPerformed(java.awt.event.MouseEvent evt) {
                 actionButtonBuild(evt);
             }
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
         });
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
-    private void actionButtonBuild(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionButtonBuild
-        //Action to add molecule to the chain
+    private void actionButtonBuild(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonBuild
+        placeOnScreen();
     }//GEN-LAST:event_actionButtonBuild
 
-    private void actionButtonDraw(java.awt.event.ActionEvent evt){
-        //Button to draw written molecule
+    private void actionButtonDraw(java.awt.event.MouseEvent evt){
+        //Button to draw written molecule        
     }
     
+    private void placeOnScreen(){
+        //For adding the appropriate group to the screen
+        String name = (String) selectionBox.getSelectedItem();
+        System.out.println(name);
+        drawImage(drawingPanel.getGraphics());
+    }
+        
+    private void drawImage(Graphics jPanelGraphics){
+        BufferedImage bi = new BufferedImage(650, 700, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = (Graphics2D) bi.getGraphics();
+        
+        g.setColor(Color.white);
+        g.fillRect(0, 0, 650, 700);
+        
+        
+        jPanelGraphics.drawImage(bi, 0, 0, rootPane);
+    }
     /**
      * @param args the command line arguments
      */
@@ -163,10 +235,10 @@ public class ChemGUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actionButton;
+    private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JComboBox selectionBox;
     // End of variables declaration//GEN-END:variables
 }
