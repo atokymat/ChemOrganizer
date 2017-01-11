@@ -6,6 +6,6 @@ Putting elements on screen
 
 Click and drag menu:
 
-bonds
+  bonds
 
-moving molecules
+  moving molecules
