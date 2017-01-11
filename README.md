@@ -1,5 +1,7 @@
 # ChemOrganizer
 
 TODO:
-1. Putting elements on screen
-2. Click and drag bonds
+
+Putting elements on screen
+
+Click and drag bonds
