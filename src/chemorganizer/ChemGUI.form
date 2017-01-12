@@ -133,7 +133,7 @@
         <Property name="text" type="java.lang.String" value="Build"/>
       </Properties>
       <Events>
-        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="actionButtonBuild"/>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="actionButtonMousePressed"/>
       </Events>
     </Component>
   </SubComponents>

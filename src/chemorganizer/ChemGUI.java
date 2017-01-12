@@ -3,7 +3,6 @@ package chemorganizer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
@@ -69,7 +68,7 @@ public class ChemGUI extends javax.swing.JFrame {
         actionButton.setText("Build");
         actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                actionButtonBuild(evt);
+                actionButtonMousePressed(evt);
             }
         });
 
@@ -105,82 +104,22 @@ public class ChemGUI extends javax.swing.JFrame {
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         if (actionButton.getText().equals("Build")){
-            //Change the action button to draw and listener to the draw action listener
-            
-            actionButton.setText("Draw");
-            actionButton.addMouseListener(new java.awt.event.MouseListener() {
-            public void actionPerformed(java.awt.event.MouseEvent evt) {
-                actionButtonDraw(evt);
-            }                
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-        });
-            
+            //Change the action button to draw and listener to the draw action listener            
+            actionButton.setText("Draw");            
         } else {
             //Change the action button to build and listener to the build action listener
-            actionButton.setText("Build");
-            actionButton.addMouseListener(new java.awt.event.MouseListener() {
-            public void actionPerformed(java.awt.event.MouseEvent evt) {
-                actionButtonBuild(evt);
-            }
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-        });
+            actionButton.setText("Build");            
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
-    private void actionButtonBuild(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonBuild
-        placeOnScreen();
-    }//GEN-LAST:event_actionButtonBuild
+    private void actionButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMousePressed
+        if (actionButton.getText().equals("Build")){
+            //Build actions
+        } else {
+            //Draw actions
+        }        
+    }//GEN-LAST:event_actionButtonMousePressed
 
-    private void actionButtonDraw(java.awt.event.MouseEvent evt){
-        //Button to draw written molecule        
-    }
     
     private void placeOnScreen(){
         //For adding the appropriate group to the screen
@@ -199,6 +138,7 @@ public class ChemGUI extends javax.swing.JFrame {
         
         jPanelGraphics.drawImage(bi, 0, 0, rootPane);
     }
+    
     /**
      * @param args the command line arguments
      */
