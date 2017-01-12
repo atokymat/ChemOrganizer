@@ -29,6 +29,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jTabbedPane1" pref="0" max="32767" attributes="0"/>
                   <Component id="actionButton" pref="164" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="nameButton" min="-2" pref="84" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -39,9 +43,11 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="drawingPanel" min="-2" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="jTabbedPane1" min="-2" pref="630" max="-2" attributes="0"/>
+                      <Component id="jTabbedPane1" min="-2" pref="600" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="actionButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="nameButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -134,6 +140,14 @@
       </Properties>
       <Events>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="actionButtonMousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="nameButton">
+      <Properties>
+        <Property name="label" type="java.lang.String" value="Name"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nameButtonMousePressed"/>
       </Events>
     </Component>
   </SubComponents>
