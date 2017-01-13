@@ -27,12 +27,12 @@
               <Component id="drawingPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTabbedPane1" pref="0" max="32767" attributes="0"/>
                   <Component id="actionButton" pref="164" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="nameButton" min="-2" pref="84" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="jTabbedPane1" alignment="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -57,6 +57,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="drawingPanel">
+      <Events>
+        <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="drawingPanelMouseDragged"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -98,9 +101,6 @@
               </StringArray>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectionBoxActionPerformed"/>
-          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Build">
