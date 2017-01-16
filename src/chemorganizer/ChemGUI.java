@@ -13,10 +13,9 @@ public class ChemGUI extends javax.swing.JFrame {
      * Creates new form ChemGUI
      */
     String actionButtonMode = "Build";
+    String mouseDragFunction = "Move";
     ArrayList<Element> elements = new ArrayList();
     Element[] e = new Element[0];
-    int clicked;
-    boolean mousePressed = false;
     
     public ChemGUI() {
         initComponents();
@@ -38,6 +37,8 @@ public class ChemGUI extends javax.swing.JFrame {
         drawInput = new javax.swing.JTextArea();
         actionButton = new javax.swing.JButton();
         nameButton = new javax.swing.JButton();
+        bondButton = new javax.swing.JButton();
+        dragButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,31 +89,56 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
+        bondButton.setLabel("Bond Mode");
+        bondButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                bondButtonMousePressed(evt);
+            }
+        });
+
+        dragButton.setEnabled(false);
+        dragButton.setLabel("Drag Mode");
+        dragButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                dragButtonMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bondButton)
+                            .addComponent(dragButton))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(actionButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameButton)))
+                        .addComponent(nameButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(bondButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dragButton)
+                        .addGap(31, 31, 31))
+                    .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -126,12 +152,20 @@ public class ChemGUI extends javax.swing.JFrame {
             actionButtonMode = "Draw";
             
             nameButton.setEnabled(false);
+            dragButton.setEnabled(false);
+            bondButton.setEnabled(false);
         } else {
             //Change the action button to build and listener to the build action listener
             actionButton.setText("Build");   
             actionButtonMode = "Build";
             
             nameButton.setEnabled(true);
+            
+            if (mouseDragFunction.equals("Move")){
+                bondButton.setEnabled(true);
+            } else {
+                dragButton.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
@@ -153,15 +187,33 @@ public class ChemGUI extends javax.swing.JFrame {
         int y = evt.getY();
         e = getElementArray();
         
-        for (int i=0; i<e.length; i++){
-            if (getDistance(x, y, e[i].x, e[i].y) < 15){
-                e[i].x = x;
-                e[i].y = y;
-                drawImage(drawingPanel.getGraphics());
-                break;
-            }
-        } 
+        if (mouseDragFunction.equals("Move")){
+            for (int i=0; i<e.length; i++){
+                if (getDistance(x, y, e[i].x, e[i].y) < 15){
+                    e[i].x = x;
+                    e[i].y = y;
+                    drawImage(drawingPanel.getGraphics());
+                    break;
+                }
+            } 
+        } else {
+            //Bond making feature
+        }
     }//GEN-LAST:event_drawingPanelMouseDragged
+
+    private void bondButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bondButtonMousePressed
+        // TODO add your handling code here:
+        bondButton.setEnabled(false);
+        dragButton.setEnabled(true);
+        mouseDragFunction = "Bond";
+    }//GEN-LAST:event_bondButtonMousePressed
+
+    private void dragButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dragButtonMousePressed
+        // TODO add your handling code here:
+        dragButton.setEnabled(false);
+        bondButton.setEnabled(true);
+        mouseDragFunction = "Move";
+    }//GEN-LAST:event_dragButtonMousePressed
 
     
     private void placeOnScreen(){
@@ -251,6 +303,8 @@ public class ChemGUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actionButton;
+    private javax.swing.JButton bondButton;
+    private javax.swing.JButton dragButton;
     private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
     private javax.swing.JScrollPane jScrollPane1;
