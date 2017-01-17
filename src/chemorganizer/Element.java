@@ -5,6 +5,8 @@ public class Element {
     int x, y;
     int numBonds;
     String name, letter;
+    Element[] bonds = new Element[4];
+    String[] bondTypes = new String[4];
 
     public Element(int x, int y, String name) {
         this.x = x;

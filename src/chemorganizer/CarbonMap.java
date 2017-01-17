@@ -21,31 +21,27 @@ public class CarbonMap {
         bonds[index] = bonded;
         bondTypes[index] = bondType;                
         
-        //Check every new bonded element
+        //Check every bonded element position
         for(int i=0; i<4; i++){
             
             //If the bond has an element attached
             if(!(bonded[i] == null)){
-                //Check every mapped element
-                for (int j=0; j<index; j++){
-                    
-                    //Check the bonds to that element
-                    for (int k=0; k<4; k++){
+                //Check every mapped element number
+                for (int j=0; j<index; j++){                    
                         
-                        //If one of the mapped elements is also bonded to this
-                        if (bonds[j][k].equals(bonded[i])){
-                            //Map carbons together
-                            if (bonded[i].letter.equals("C")){
-                                indexMap[index][i] = k;
-                                indexMap[j][k] = i;
-                            }
-//                            else{
-//                                //This naming feature can exist in chemistry, but has not
-//                                //been implemented, and gets very complex and is 
-//                                //therefore beyond the scope of a project of this scale
-//                            }
+                    //If one of the mapped elements is also bonded to this element
+                    if (bonds[j][i].equals(bonded[i])){
+                        //Map carbons together
+                        if (bonded[i].letter.equals("C") && bonds[j][i].letter.equals("C")){
+                            indexMap[index][i] = j;
+                            indexMap[j][i] = index;
                         }
-                    }                    
+//                        else{
+//                            //This naming feature can exist in chemistry, but has not
+//                            //been implemented, and gets very complex and is 
+//                            //therefore beyond the scope of a project of this scale
+//                        }
+                    }                                      
                 }
             }
         }

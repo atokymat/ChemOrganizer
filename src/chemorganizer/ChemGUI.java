@@ -16,6 +16,7 @@ public class ChemGUI extends javax.swing.JFrame {
     String mouseDragFunction = "Move";
     ArrayList<Element> elements = new ArrayList();
     Element[] e = new Element[0];
+    int i0 = -1;
     
     public ChemGUI() {
         initComponents();
@@ -42,6 +43,11 @@ public class ChemGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        drawingPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseReleased(evt);
+            }
+        });
         drawingPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 drawingPanelMouseDragged(evt);
@@ -186,18 +192,22 @@ public class ChemGUI extends javax.swing.JFrame {
         int x = evt.getX();
         int y = evt.getY();
         e = getElementArray();
-        
         if (mouseDragFunction.equals("Move")){
-            for (int i=0; i<e.length; i++){
-                if (getDistance(x, y, e[i].x, e[i].y) < 15){
-                    e[i].x = x;
-                    e[i].y = y;
-                    drawImage(drawingPanel.getGraphics());
-                    break;
+            if (i0 != -1){
+                e[i0].x = x;
+                e[i0].y = y;
+                drawImage(drawingPanel.getGraphics());
+            } else {
+                for (int i=0; i<e.length; i++){
+                    if (getDistance(x, y, e[i].x, e[i].y) < 15){
+                        i0 = i;
+                        break;
+                    }
                 }
-            } 
+            }
         } else {
             //Bond making feature
+            //MAKE ABSOLUTELY SURE THAT THE BOND NUMBERS MATCH ALWAYS!!
         }
     }//GEN-LAST:event_drawingPanelMouseDragged
 
@@ -214,6 +224,11 @@ public class ChemGUI extends javax.swing.JFrame {
         bondButton.setEnabled(true);
         mouseDragFunction = "Move";
     }//GEN-LAST:event_dragButtonMousePressed
+
+    private void drawingPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseReleased
+        // TODO add your handling code here:
+        i0 = -1;
+    }//GEN-LAST:event_drawingPanelMouseReleased
 
     
     private void placeOnScreen(){
@@ -245,6 +260,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 g.setFont(new Font("default", Font.PLAIN, 16));
             }            
             g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
+            //DO SOME BOND DRAWING HERE TOO
         }
         
         jPanelGraphics.drawImage(bi, 0, 0, rootPane);
