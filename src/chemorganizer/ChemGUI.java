@@ -12,7 +12,6 @@ public class ChemGUI extends javax.swing.JFrame {
     /**
      * Creates new form ChemGUI
      */
-    String actionButtonMode = "Build";
     String mouseDragFunction = "Move";
     ArrayList<Element> elements = new ArrayList();
     Element[] e = new Element[0];
@@ -42,6 +41,9 @@ public class ChemGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         drawInput = new javax.swing.JTextArea();
         nameButton = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +80,11 @@ public class ChemGUI extends javax.swing.JFrame {
         });
 
         clickComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Move Element", "Bond Element", "Delete Element" }));
+        clickComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                clickComboBoxItemStateChanged(evt);
+            }
+        });
 
         jLabel1.setText("Click & Drag Function");
 
@@ -88,10 +95,13 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(selectionBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,17 +130,36 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel2.setText("Use Presets:");
+
+        jLabel3.setText("Type an IUPAC name:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(nameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+            .addComponent(nameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameButton))
         );
@@ -156,12 +185,7 @@ public class ChemGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void actionButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMousePressed
-        if (actionButtonMode.equals("Build")){
-            //Build actions
-            placeOnScreen();
-        } else {
-            //Draw actions
-        }
+        placeOnScreen();
     }//GEN-LAST:event_actionButtonMousePressed
 
     private void nameButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameButtonMousePressed
@@ -185,9 +209,11 @@ public class ChemGUI extends javax.swing.JFrame {
                     }
                 }
             }
-        } else {
+        } else if (mouseDragFunction.equals("Bond")){
             //Bond making feature
             //MAKE ABSOLUTELY SURE THAT THE BOND NUMBERS MATCH ALWAYS!!
+        } else {
+            //Element deletion feature
         }
     }//GEN-LAST:event_drawingPanelMouseDragged
 
@@ -195,6 +221,21 @@ public class ChemGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         i0 = -1;
     }//GEN-LAST:event_drawingPanelMouseReleased
+
+    private void clickComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_clickComboBoxItemStateChanged
+        String boxSelection = (String) clickComboBox.getSelectedItem();
+        switch(boxSelection){
+            case "Move Element":
+                mouseDragFunction = "Move";
+                break;
+            case "Bond Element":
+                mouseDragFunction = "Bond";
+                break;
+            case "Delete Element":
+                mouseDragFunction = "Delete";
+                break;
+        }
+    }//GEN-LAST:event_clickComboBoxItemStateChanged
 
     
     private void placeOnScreen(){
@@ -288,7 +329,10 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JComboBox clickComboBox;
     private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
