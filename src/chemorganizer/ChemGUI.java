@@ -218,7 +218,6 @@ public class ChemGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_drawingPanelMouseDragged
 
     private void drawingPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseReleased
-        // TODO add your handling code here:
         i0 = -1;
     }//GEN-LAST:event_drawingPanelMouseReleased
 
