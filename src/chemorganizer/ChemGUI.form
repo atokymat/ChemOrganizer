@@ -29,7 +29,10 @@
           <Group type="102" attributes="0">
               <Component id="drawingPanel" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jTabbedPane2" min="-2" pref="140" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jTabbedPane2" min="-2" pref="140" max="-2" attributes="0"/>
+                  <Component id="resetButton" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -40,6 +43,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jTabbedPane2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="resetButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -108,7 +113,7 @@
                                   </Group>
                                   <Component id="actionButton" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="14" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Component id="selectionBox" alignment="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -202,7 +207,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPane1" pref="0" max="32767" attributes="0"/>
-                  <Component id="nameButton" max="32767" attributes="0"/>
+                  <Component id="drawButton" max="32767" attributes="0"/>
                   <Component id="jComboBox1" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
@@ -210,7 +215,7 @@
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="19" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -225,7 +230,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jComboBox1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="nameButton" min="-2" max="-2" attributes="0"/>
+                      <Component id="drawButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -247,12 +252,13 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="nameButton">
+            <Component class="javax.swing.JButton" name="drawButton">
               <Properties>
-                <Property name="label" type="java.lang.String" value="Name"/>
+                <Property name="text" type="java.lang.String" value="Draw"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="nameButtonMousePressed"/>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="drawButtonMousePressed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="jComboBox1">
@@ -281,5 +287,13 @@
         </Container>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JButton" name="resetButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reset Screen"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="resetButtonMousePressed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

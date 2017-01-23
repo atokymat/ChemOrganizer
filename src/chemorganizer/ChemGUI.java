@@ -46,10 +46,11 @@ public class ChemGUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         drawInput = new javax.swing.JTextArea();
-        nameButton = new javax.swing.JButton();
+        drawButton = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        resetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(815, 700));
@@ -121,7 +122,7 @@ public class ChemGUI extends javax.swing.JFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel4)))
                             .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 14, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(selectionBox, 0, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -147,10 +148,11 @@ public class ChemGUI extends javax.swing.JFrame {
         drawInput.setRows(5);
         jScrollPane1.setViewportView(drawInput);
 
-        nameButton.setLabel("Name");
-        nameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        drawButton.setText("Draw");
+        drawButton.setToolTipText("");
+        drawButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                nameButtonMousePressed(evt);
+                drawButtonMousePressed(evt);
             }
         });
 
@@ -165,14 +167,14 @@ public class ChemGUI extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(nameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,10 +187,17 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nameButton))
+                .addComponent(drawButton))
         );
 
         jTabbedPane2.addTab("Draw", jPanel2);
+
+        resetButton.setText("Reset Screen");
+        resetButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                resetButtonMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,7 +206,9 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resetButton))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -206,6 +217,8 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(resetButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -225,9 +238,68 @@ public class ChemGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_actionButtonMousePressed
 
-    private void nameButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameButtonMousePressed
+    private void drawButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawButtonMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nameButtonMousePressed
+        resetScreen();
+        
+        String b = drawInput.getText();
+        String[] build = b.split(" ");
+        int l = build.length;
+        int stop = l-1;
+        String baseChain = "";
+        
+        if (build[l-1].equals("acid")){
+            baseChain = build[l-2];
+            stop = l-2;
+        } else {
+            baseChain = build[l-1];
+        }
+        switch (baseChain.substring(0, 3)){
+//            case "cyc":
+//                break;
+            case "met":
+                placeCarbonChain(1);
+                break;
+            case "eth":
+                placeCarbonChain(2);
+                break;
+            case "pro":
+                placeCarbonChain(3);
+                break;
+            case "but":
+                placeCarbonChain(4);
+                break;
+            case "pen":
+                placeCarbonChain(5);
+                break;
+            case "hex":
+                placeCarbonChain(6);
+                break;
+            case "hep":
+                placeCarbonChain(7);
+                break;
+            case "oct":
+                placeCarbonChain(8);
+                break;
+            case "non":
+                placeCarbonChain(9);
+                break;
+            case "dec":
+                placeCarbonChain(10);
+                break;
+//            case "ben":
+//                break;
+                
+        }
+        //Put those branches down
+        for (int i=0; i<stop; i++){
+            //Put the branch down
+//            int x = 325 - 25*(its number)/2
+            
+        }
+        //Add some pretty hydrogens
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_drawButtonMousePressed
 
     private void drawingPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseDragged
         int x = evt.getX();
@@ -278,7 +350,9 @@ public class ChemGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         int x = evt.getX();
         int y = evt.getY();
-        if (mouseDragFunction.equals("Delete")){
+        if (placeElement){
+            placeElement(x, y);
+        } else if (mouseDragFunction.equals("Delete")){
             for (int i=0; i<e.length; i++){
                 if (getDistance(x, y, e[i].x, e[i].y) < 15){                        
                     elements.remove(e[i]);
@@ -286,8 +360,6 @@ public class ChemGUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } else if (placeElement){
-            placeElement(x, y);
         }
     }//GEN-LAST:event_drawingPanelMouseClicked
 
@@ -303,6 +375,11 @@ public class ChemGUI extends javax.swing.JFrame {
             g.drawString(hover, x-5, y+5);
         }
     }//GEN-LAST:event_drawingPanelMouseMoved
+
+    private void resetButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetButtonMousePressed
+        // TODO add your handling code here:
+        resetScreen();
+    }//GEN-LAST:event_resetButtonMousePressed
     
     public void placeElement(int x, int y){
         Element nextElement = new Element(x, y, selectionBoxElement);
@@ -310,6 +387,20 @@ public class ChemGUI extends javax.swing.JFrame {
         drawImage(drawingPanel.getGraphics());
         placeElement = false;        
     }
+    
+    public void placeCarbonChain(int len){ 
+        int x = 325 - 40*len/2;
+        for (int i=0; i<len; i++){
+            elements.add(new Element(x, 350, "Carbon"));
+            x += 40;
+        }
+    }
+    
+    public void resetScreen(){
+        elements = new ArrayList();
+        drawImage(drawingPanel.getGraphics());
+    }
+    
     private void drawImage(Graphics jPanelGraphics){
         BufferedImage bi = new BufferedImage(650, 700, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) bi.getGraphics();
@@ -385,6 +476,7 @@ public class ChemGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actionButton;
     private javax.swing.JComboBox clickComboBox;
+    private javax.swing.JButton drawButton;
     private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
     private javax.swing.JComboBox jComboBox1;
@@ -396,7 +488,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JButton nameButton;
+    private javax.swing.JButton resetButton;
     private javax.swing.JComboBox selectionBox;
     // End of variables declaration//GEN-END:variables
 }
