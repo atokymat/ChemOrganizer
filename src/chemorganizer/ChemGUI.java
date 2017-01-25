@@ -243,56 +243,7 @@ public class ChemGUI extends javax.swing.JFrame {
         resetScreen();
         
         String b = drawInput.getText();
-        String[] build = b.split(" ");
-        int l = build.length;
-        int stop = l-1;
-        int chainLen = 0;
-        String baseChain = "";
         
-        if (build[l-1].equals("acid")){
-            baseChain = build[l-2];
-            stop = l-2;
-        } else {
-            baseChain = build[l-1];
-        }
-        switch (baseChain.substring(0, 3)){
-//            case "cyc":
-//                break;
-            case "met":
-                chainLen = 1;
-                break;
-            case "eth":
-                chainLen = 2;
-                break;
-            case "pro":
-                chainLen = 3;
-                break;
-            case "but":
-                chainLen = 4;
-                break;
-            case "pen":
-                chainLen = 5;
-                break;
-            case "hex":
-                chainLen = 6;
-                break;
-            case "hep":
-                chainLen = 7;
-                break;
-            case "oct":
-                chainLen = 8;
-                break;
-            case "non":
-                chainLen = 9;
-                break;
-            case "dec":
-                chainLen = 10;
-                break;
-//            case "ben":
-//                break;       
-        }
-        placeCarbonChain(chainLen);
-        boolean[] carbonBonds = new boolean[chainLen];
         //add the ending as a "branch"
         for (int i=0; i<stop; i++){
             String[] parsedBranch = build[i].split("-");            
@@ -309,7 +260,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 carbonBonds[n[j]-1] = true;
             }
         }
-        //Add some pretty hydrogens
+        
         drawImage(drawingPanel.getGraphics());
     }//GEN-LAST:event_drawButtonMousePressed
 
@@ -334,7 +285,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 }
             }
         } else if (mouseDragFunction.equals("Bond")){
-            //Bond making feature
+            //Bond making feature, low priority
             //MAKE ABSOLUTELY SURE THAT THE BOND NUMBERS MATCH ALWAYS!!
         } // The Delete feature is handled in drawingPanelMouseClicked
     }//GEN-LAST:event_drawingPanelMouseDragged
@@ -398,50 +349,7 @@ public class ChemGUI extends javax.swing.JFrame {
         elements.add(nextElement);
         drawImage(drawingPanel.getGraphics());
         placeElement = false;        
-    }
-    
-    public int[] parseNumbers(String a){
-        String[] a0 = a.split(",");
-        int[] n = new int [a0.length];
-        for (int i=0; i<a0.length; i++){
-            n[i] = Integer.parseInt(a0[i]);
-        }
-        return n;
-    }
-    
-    public String parseName(String a){
-        String name = " ";
-        if (a.contains("fluoro")){
-            name = "Fluorine";
-        } else if (a.contains("chloro")){
-            name = "Chlorine";
-        } else if (a.contains("bromo")){
-            name = "Bromine";
-        } else if (a.contains("iodo")){
-            name = "Iodine";
-        } else if (a.contains("amino")){
-            name = "Nitrogen";
-        } else if (a.contains("hydroxyl")){
-            name = "Oxygen";
-        } else if (a.contains("carbonyl")){
-            
-        } else if (a.contains("methyl")){
-            name = "Carbon";
-        } else if (a.contains("ethyl")){
-            
-        } else if (a.contains("propyl")){
-            
-        } else if (a.contains("isopropyl")){
-            
-        } else if (a.contains("butyl")){
-            
-        } else if (a.contains("secbutyl")){
-            
-        } else if (a.contains("isobutyl")){
-            
-        }
-        return name;
-    }
+    }        
     
     public void resetScreen(){
         elements = new ArrayList();
@@ -463,7 +371,12 @@ public class ChemGUI extends javax.swing.JFrame {
                 g.setFont(new Font("default", Font.PLAIN, 16));
             }            
             g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
-            //DO SOME BOND DRAWING HERE TOO
+            //Draw lines to represent bonds
+            for (int j=0; j<4; j++){
+                if (e[i].bonds[j] != null){
+                    g.drawLine(e[i].x, e[i].y, e[i].bonds[j].x, e[i].bonds[j].y); 
+                }
+            }
         }
         
         jPanelGraphics.drawImage(bi, 0, 0, rootPane);
