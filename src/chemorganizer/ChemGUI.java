@@ -122,7 +122,7 @@ public class ChemGUI extends javax.swing.JFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel4)))
                             .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 14, Short.MAX_VALUE))
                     .addComponent(selectionBox, 0, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -174,7 +174,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,14 +398,6 @@ public class ChemGUI extends javax.swing.JFrame {
         elements.add(nextElement);
         drawImage(drawingPanel.getGraphics());
         placeElement = false;        
-    }
-    
-    public void placeCarbonChain(int len){ 
-        int x = 325 - 40*len/2;
-        for (int i=0; i<len; i++){
-            elements.add(new Element(x, 350, "Carbon"));
-            x += 40;
-        }
     }
     
     public int[] parseNumbers(String a){
