@@ -241,25 +241,9 @@ public class ChemGUI extends javax.swing.JFrame {
     private void drawButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawButtonMousePressed
         // TODO add your handling code here:
         resetScreen();
-        
-        String b = drawInput.getText();
-        
-        //add the ending as a "branch"
-        for (int i=0; i<stop; i++){
-            String[] parsedBranch = build[i].split("-");            
-            int[] n = parseNumbers(parsedBranch[0]);
-            for (int j=0; j<n.length; j++){
-                int x = (285-20*chainLen) + 80*n[j]/2;
-                int y = 310;
-                if (carbonBonds[n[j]-1]){
-                    y = 390;
-                }
-                String name = parseName(parsedBranch[1]);
-                Element next = new Element(x, y, name);
-                elements.add(next);
-                carbonBonds[n[j]-1] = true;
-            }
-        }
+        ElementName b = new ElementName(drawInput.getText());
+        b.generateMap();
+        this.elements = b.elements;
         
         drawImage(drawingPanel.getGraphics());
     }//GEN-LAST:event_drawButtonMousePressed
@@ -365,18 +349,30 @@ public class ChemGUI extends javax.swing.JFrame {
         g.setColor(Color.black);
         e = getElementArray();
         for (int i=0; i<e.length; i++){
+            //Draw lines to represent bonds
+            for (int j=0; j<4; j++){
+                if (e[i].bonds[j] != null){
+                    if (e[i].bondTypes[j].equals("single")) {
+                        g.drawLine(e[i].x, e[i].y-2, e[i].bonds[j].x, e[i].bonds[j].y-2);
+                    } else if (e[i].bondTypes[j].equals("double")) {
+                        g.drawLine(e[i].x, e[i].y, e[i].bonds[j].x, e[i].bonds[j].y);
+                        g.drawLine(e[i].x, e[i].y-4, e[i].bonds[j].x, e[i].bonds[j].y-4);
+                    } else {
+                        g.drawLine(e[i].x, e[i].y+1, e[i].bonds[j].x, e[i].bonds[j].y+1);
+                        g.drawLine(e[i].x, e[i].y-2, e[i].bonds[j].x, e[i].bonds[j].y-2);
+                        g.drawLine(e[i].x, e[i].y-5, e[i].bonds[j].x, e[i].bonds[j].y-5);
+                        
+                    }                    
+                }
+            }
+            
             if (e[i].letter.equals("C")){
                 g.setFont(new Font("default", Font.BOLD, 20));
             } else {
                 g.setFont(new Font("default", Font.PLAIN, 16));
             }            
             g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
-            //Draw lines to represent bonds
-            for (int j=0; j<4; j++){
-                if (e[i].bonds[j] != null){
-                    g.drawLine(e[i].x, e[i].y, e[i].bonds[j].x, e[i].bonds[j].y); 
-                }
-            }
+
         }
         
         jPanelGraphics.drawImage(bi, 0, 0, rootPane);

@@ -6,7 +6,8 @@ public class Element {
     int numBonds, currBond;
     String name, letter;
     Element[] bonds = new Element[4];
-    String[] bondTypes = new String[4];    
+    String[] bondTypes = new String[4];
+    boolean[] usedSites = new boolean[4]; //U,D,L,R
 
     public Element(int x, int y, String name) {
         this.x = x;
@@ -44,7 +45,7 @@ public class Element {
         }
     }
     
-    public void bondTo(Element e, String type, String location){
+    public void bondTo(Element e, String type, int location){
         int n;
         if (type.equals("single")){
             n = 1;
@@ -53,35 +54,51 @@ public class Element {
         } else {
             n = 3;
         }        
-        if (this.currBond+n < this.numBonds && e.currBond+n < e.numBonds){
+        if (this.currBond+n <= this.numBonds && e.currBond+n <= e.numBonds){
             this.bonds[currBond] = e;
-            this.bondTypes[currBond] = type;            
-            this.currBond++;
+            this.bondTypes[currBond] = type;
+            this.currBond += n;
             int x, y;
-            if (location.equals("U")){
-                x = this.x;
-                y = this.y-40;
-            } else if (location.equals("D")){
-                x = this.x;
-                y = this.y+40;
-            } else if (location.equals("L")){
-                x = this.x-40;
-                y = this.y;
-            } else {
-                x = this.x+40;
-                y = this.y;
+            switch (location) {
+                case 0:
+                    x = this.x;
+                    y = this.y-40;
+                    this.usedSites[0] = true;
+                    e.usedSites[1] = true;
+                    break;
+                case 1:
+                    x = this.x;
+                    y = this.y+40;
+                    this.usedSites[1] = true;
+                    e.usedSites[0] = true;
+                    break;
+                case 2:
+                    x = this.x-40;
+                    y = this.y;
+                    this.usedSites[2] = true;
+                    e.usedSites[3] = true;
+                    break;
+                default:
+                    x = this.x+40;
+                    y = this.y;
+                    this.usedSites[3] = true;
+                    e.usedSites[2] = true;
+                    break;
             }
             e.bondTo(this, type, n, x, y);
         } else {
             System.out.println("There weren't enough available bond sites");
+//            System.out.println(this.currBond + " " + n + " " + this.numBonds);
+//            System.out.println(e.currBond + " " + n + " " + e.numBonds);
+//            System.out.println(this.name + " " + e.name);
         }        
     }
     
     private void bondTo(Element e, String type, int n, int x, int y){
-        assert this.currBond+n < this.numBonds && e.currBond+n < e.numBonds;
+        assert this.currBond+n <= this.numBonds && e.currBond+n <= e.numBonds;
         this.bonds[currBond] = e;
-        this.bondTypes[currBond] = type;            
-        this.currBond++;
+        this.bondTypes[currBond] = type;
+        this.currBond+=n;
         this.x = x;
         this.y = y;
     }
