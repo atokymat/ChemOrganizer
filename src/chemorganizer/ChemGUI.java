@@ -246,6 +246,7 @@ public class ChemGUI extends javax.swing.JFrame {
         String[] build = b.split(" ");
         int l = build.length;
         int stop = l-1;
+        int chainLen = 0;
         String baseChain = "";
         
         if (build[l-1].equals("acid")){
@@ -258,44 +259,55 @@ public class ChemGUI extends javax.swing.JFrame {
 //            case "cyc":
 //                break;
             case "met":
-                placeCarbonChain(1);
+                chainLen = 1;
                 break;
             case "eth":
-                placeCarbonChain(2);
+                chainLen = 2;
                 break;
             case "pro":
-                placeCarbonChain(3);
+                chainLen = 3;
                 break;
             case "but":
-                placeCarbonChain(4);
+                chainLen = 4;
                 break;
             case "pen":
-                placeCarbonChain(5);
+                chainLen = 5;
                 break;
             case "hex":
-                placeCarbonChain(6);
+                chainLen = 6;
                 break;
             case "hep":
-                placeCarbonChain(7);
+                chainLen = 7;
                 break;
             case "oct":
-                placeCarbonChain(8);
+                chainLen = 8;
                 break;
             case "non":
-                placeCarbonChain(9);
+                chainLen = 9;
                 break;
             case "dec":
-                placeCarbonChain(10);
+                chainLen = 10;
                 break;
 //            case "ben":
-//                break;
-                
+//                break;       
         }
-        //Put those branches down
+        placeCarbonChain(chainLen);
+        boolean[] carbonBonds = new boolean[chainLen];
+        //add the ending as a "branch"
         for (int i=0; i<stop; i++){
-            //Put the branch down
-//            int x = 325 - 25*(its number)/2
-            
+            String[] parsedBranch = build[i].split("-");            
+            int[] n = parseNumbers(parsedBranch[0]);
+            for (int j=0; j<n.length; j++){
+                int x = (285-20*chainLen) + 80*n[j]/2;
+                int y = 310;
+                if (carbonBonds[n[j]-1]){
+                    y = 390;
+                }
+                String name = parseName(parsedBranch[1]);
+                Element next = new Element(x, y, name);
+                elements.add(next);
+                carbonBonds[n[j]-1] = true;
+            }
         }
         //Add some pretty hydrogens
         drawImage(drawingPanel.getGraphics());
@@ -394,6 +406,49 @@ public class ChemGUI extends javax.swing.JFrame {
             elements.add(new Element(x, 350, "Carbon"));
             x += 40;
         }
+    }
+    
+    public int[] parseNumbers(String a){
+        String[] a0 = a.split(",");
+        int[] n = new int [a0.length];
+        for (int i=0; i<a0.length; i++){
+            n[i] = Integer.parseInt(a0[i]);
+        }
+        return n;
+    }
+    
+    public String parseName(String a){
+        String name = " ";
+        if (a.contains("fluoro")){
+            name = "Fluorine";
+        } else if (a.contains("chloro")){
+            name = "Chlorine";
+        } else if (a.contains("bromo")){
+            name = "Bromine";
+        } else if (a.contains("iodo")){
+            name = "Iodine";
+        } else if (a.contains("amino")){
+            name = "Nitrogen";
+        } else if (a.contains("hydroxyl")){
+            name = "Oxygen";
+        } else if (a.contains("carbonyl")){
+            
+        } else if (a.contains("methyl")){
+            name = "Carbon";
+        } else if (a.contains("ethyl")){
+            
+        } else if (a.contains("propyl")){
+            
+        } else if (a.contains("isopropyl")){
+            
+        } else if (a.contains("butyl")){
+            
+        } else if (a.contains("secbutyl")){
+            
+        } else if (a.contains("isobutyl")){
+            
+        }
+        return name;
     }
     
     public void resetScreen(){
