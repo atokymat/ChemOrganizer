@@ -350,28 +350,43 @@ public class ChemGUI extends javax.swing.JFrame {
         e = getElementArray();
         for (int i=0; i<e.length; i++){
             //Draw lines to represent bonds
-            for (int j=0; j<4; j++){
-                if (e[i].bonds[j] != null){
-                    if (e[i].bondTypes[j].equals("single")) {
-                        g.drawLine(e[i].x, e[i].y-2, e[i].bonds[j].x, e[i].bonds[j].y-2);
-                    } else if (e[i].bondTypes[j].equals("double")) {
-                        g.drawLine(e[i].x, e[i].y, e[i].bonds[j].x, e[i].bonds[j].y);
-                        g.drawLine(e[i].x, e[i].y-4, e[i].bonds[j].x, e[i].bonds[j].y-4);
-                    } else {
-                        g.drawLine(e[i].x, e[i].y+1, e[i].bonds[j].x, e[i].bonds[j].y+1);
-                        g.drawLine(e[i].x, e[i].y-2, e[i].bonds[j].x, e[i].bonds[j].y-2);
-                        g.drawLine(e[i].x, e[i].y-5, e[i].bonds[j].x, e[i].bonds[j].y-5);
-                        
-                    }                    
-                }
+            if (e[i].bonds[0] != null){
+                if (e[i].bondTypes[0].equals("single")) {
+                    g.drawLine(e[i].x+2, e[i].y-12, e[i].bonds[0].x+2, e[i].bonds[0].y+6);
+                } else if (e[i].bondTypes[0].equals("double")) {
+                    g.drawLine(e[i].x+4, e[i].y-12, e[i].bonds[0].x+4, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x, e[i].y-12, e[i].bonds[0].x, e[i].bonds[0].y+6);
+                } else {
+                    g.drawLine(e[i].x+5, e[i].y-12, e[i].bonds[0].x+5, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x+2, e[i].y-12, e[i].bonds[0].x+2, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x-1, e[i].y-12, e[i].bonds[0].x-1, e[i].bonds[0].y+6);
+
+                }                    
+            }            
+            if (e[i].bonds[3] != null){
+                if (e[i].bondTypes[3].equals("single")) {
+                    g.drawLine(e[i].x+10, e[i].y-2, e[i].bonds[3].x-8, e[i].bonds[3].y-2);
+                } else if (e[i].bondTypes[3].equals("double")) {
+                    g.drawLine(e[i].x+10, e[i].y, e[i].bonds[3].x-8, e[i].bonds[3].y);
+                    g.drawLine(e[i].x+10, e[i].y-4, e[i].bonds[3].x-8, e[i].bonds[3].y-4);
+                } else {
+                    g.drawLine(e[i].x+10, e[i].y+1, e[i].bonds[3].x-8, e[i].bonds[3].y+1);
+                    g.drawLine(e[i].x+10, e[i].y-2, e[i].bonds[3].x-8, e[i].bonds[3].y-2);
+                    g.drawLine(e[i].x+10, e[i].y-5, e[i].bonds[3].x-8, e[i].bonds[3].y-5);
+
+                }                    
             }
-            
+
             if (e[i].letter.equals("C")){
                 g.setFont(new Font("default", Font.BOLD, 20));
             } else {
                 g.setFont(new Font("default", Font.PLAIN, 16));
-            }            
-            g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
+            }
+            if (e[i].letter.equals("HO") || e[i].letter.equals("H\u2082N")){
+                g.drawString(e[i].letter, e[i].x-22, e[i].y+5);
+            } else {
+                g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
+            }
 
         }
         

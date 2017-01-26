@@ -7,9 +7,10 @@ public class ElementName {
     Element[] baseChain;
     ArrayList<Element> elements = new ArrayList();
     int chainLen;
+    String bondType;
     
     public ElementName(String n) {
-        this.input = n;
+        this.input = n.toLowerCase();
     }
     
     public void generateMap(){
@@ -19,49 +20,39 @@ public class ElementName {
         String last = branches[numBranches-1];
         String base;
         String[] baseBonds;
+        boolean addAcid = false;
         //Set up bonds by default to be single
 
         
         //Some elements end with "-oic acid", so splitting on " " will miss the base chain
         if (last.equals("acid")){
             base = branches[numBranches-2];
+            addAcid = true;
         } else {
             base = branches[numBranches-1];
         }
                 
         //Here we take its name and determine how many carbons are in the main chain
-        switch (base.substring(0, 3)){
-            case "met":
-                chainLen = 1;
-                break;
-            case "eth":
-                chainLen = 2;
-                break;
-            case "pro":
-                chainLen = 3;
-                break;
-            case "but":
-                chainLen = 4;
-                break;
-            case "pen":
-                chainLen = 5;
-                break;
-            case "hex":
-                chainLen = 6;
-                break;
-            case "hep":
-                chainLen = 7;
-                break;
-            case "oct":
-                chainLen = 8;
-                break;
-            case "non":
-                chainLen = 9;
-                break;
-            case "dec":
-                chainLen = 10;
-                break;     
-        }
+        if (base.contains("met"))
+            chainLen = 1;
+        else if (base.contains("eth"))
+            chainLen = 2;
+        else if (base.contains("pro"))
+            chainLen = 3;
+        else if (base.contains("but"))
+            chainLen = 4;
+        else if (base.contains("pen"))
+            chainLen = 5;
+        else if (base.contains("hex"))
+            chainLen = 6;
+        else if (base.contains("hep"))
+            chainLen = 7;
+        else if (base.contains("oct"))
+            chainLen = 8;
+        else if (base.contains("non"))
+            chainLen = 9;
+        else if (base.contains("dec"))
+            chainLen = 10;
         
         baseChain = new Element[chainLen];
         baseBonds = new String[chainLen];
@@ -75,11 +66,12 @@ public class ElementName {
             x += 40;
         }
         
+        
         //Bonds in the base chain are not necessarily all single bonds
+        String[] name = base.split("-");
         if (base.contains("ene")){
-            String[] name = base.split("-");
             for(int i=0; i<name.length; i++){
-                if (name[i].equals("ene")){
+                if (name[i].contains("ene")){
                     int[] num = parseNumbers(name[i-1]);
                     for (int j=0; j<num.length; j++){
                         baseBonds[num[j]] = "double";
@@ -88,9 +80,8 @@ public class ElementName {
             }
         }
         if (base.contains("yne")){
-            String[] name = base.split("-");
             for(int i=0; i<name.length; i++){
-                if (name[i].equals("yne")){
+                if (name[i].contains("yne")){
                     int[] num = parseNumbers(name[i-1]);
                     for (int j=0; j<num.length; j++){
                         baseBonds[num[j]] = "triple";
@@ -98,6 +89,7 @@ public class ElementName {
                 }
             }
         }
+
         
         //Get stuff from the end of the base chain here too "pent-2-ol"
         
@@ -110,6 +102,35 @@ public class ElementName {
             }
         }
         
+        //Add primary branch to the chain
+        if (addAcid){
+            Element Oxygen = new Element(0, 0, "Oxygen");
+            Element Hydroxyl = new Element(0, 0, "Hydroxyl-R");
+            baseChain[0].bondTo(Oxygen, "double", 0);
+            baseChain[0].bondTo(Hydroxyl, "single", 2);
+            elements.add(Oxygen);
+            elements.add(Hydroxyl);
+        }
+        for (int i=0; i<name.length; i++){
+            if (name[i].contains("ol")){
+                String chain = name[i-1] + "-hydroxyl ";
+                input = chain + input;
+            }
+            if (name[i].contains("al")){
+                String chain = "1-carbonyl ";
+                input = chain + input;
+            }
+            if (name[i].contains("amine")){
+                String chain = name[i-1] + "-amino ";
+                input = chain + input;
+            }
+            if (name[i].contains("one")){
+                String chain = name[i-1] + "-carbonyl";
+                input = chain + input;
+            }
+        }
+        branches = input.split(" ");
+        
         //Adding the branches to the carbons
         for (int i=0; i<numBranches; i++){
             if (branches[i].equals(base)){
@@ -117,16 +138,21 @@ public class ElementName {
             }
             String[] branchInfo = branches[i].split("-");
             int[] n = parseNumbers(branchInfo[0]);
-            String name = parseName(branchInfo[1]);         
+            String nextName = parseName(branchInfo[1]);         
             for (int j=0; j<n.length; j++){
-                Element next = new Element(10, 10, name);
+                Element next = new Element(10, 10, nextName);
                 int q=-1;
                 for (int k=3; k>=0; k--){
                     if (baseChain[n[j]].usedSites[k] == false){
                         q = k;
                     }
                 }
-                baseChain[n[j]].bondTo(next, "single", q);
+                if (next.name.equals("Hydroxyl") && q == 2){
+                    next.letter = "HO";
+                } else if (next.name.equals("Amino") && q == 2){
+                    next.letter = "H\u2082N";
+                }
+                baseChain[n[j]].bondTo(next, bondType, q);
                 elements.add(next);
             }
         }
@@ -157,20 +183,28 @@ public class ElementName {
         String name = " ";
         if (a.contains("fluoro")){
             name = "Fluorine";
+            bondType = "single";
         } else if (a.contains("chloro")){
             name = "Chlorine";
+            bondType = "single";
         } else if (a.contains("bromo")){
             name = "Bromine";
+            bondType = "single";
         } else if (a.contains("iodo")){
             name = "Iodine";
+            bondType = "single";
         } else if (a.contains("amino")){
-            name = "Nitrogen";
+            name = "Amino";
+            bondType = "single";
         } else if (a.contains("hydroxyl")){
+            name = "Hydroxyl";
+            bondType = "single";
+        } else if (a.contains("carbonyl") || a.contains("oxo")){
             name = "Oxygen";
-        } else if (a.contains("carbonyl")){
-            
+            bondType = "double";
         } else if (a.contains("methyl")){
             name = "Carbon";
+            bondType = "single";
         } else if (a.contains("ethyl")){
             
         } else if (a.contains("propyl")){

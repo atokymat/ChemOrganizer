@@ -40,6 +40,18 @@ public class Element {
         else if (this.name.equals("Bromine")){
             this.letter = "Br";
         }
+        else if (this.name.equals("Amino")){
+            this.letter = "NH\u2082";
+        }
+        else if (this.name.equals("Amino-R")){
+            this.letter = "H\u2082N";
+        }
+        else if (this.name.equals("Hydroxyl")){
+            this.letter = "OH";
+        }
+        else if (this.name.equals("Hydroxyl-R")){
+            this.letter = "HO";
+        }
         else {
             this.letter = this.name.substring(0, 1);
         }
@@ -54,38 +66,42 @@ public class Element {
         } else {
             n = 3;
         }        
-        if (this.currBond+n <= this.numBonds && e.currBond+n <= e.numBonds){
-            this.bonds[currBond] = e;
-            this.bondTypes[currBond] = type;
+        if (this.numBonds()+n <= this.numBonds && e.numBonds()+n <= e.numBonds){
+            this.bonds[location] = e;
+            this.bondTypes[location] = type;
             this.currBond += n;
-            int x, y;
+            int x, y, sendTo;
             switch (location) {
                 case 0:
                     x = this.x;
                     y = this.y-40;
                     this.usedSites[0] = true;
                     e.usedSites[1] = true;
+                    sendTo = 1;
                     break;
                 case 1:
                     x = this.x;
                     y = this.y+40;
                     this.usedSites[1] = true;
                     e.usedSites[0] = true;
+                    sendTo = 0;
                     break;
                 case 2:
                     x = this.x-40;
                     y = this.y;
                     this.usedSites[2] = true;
                     e.usedSites[3] = true;
+                    sendTo = 3;
                     break;
                 default:
                     x = this.x+40;
                     y = this.y;
                     this.usedSites[3] = true;
                     e.usedSites[2] = true;
+                    sendTo = 2;
                     break;
             }
-            e.bondTo(this, type, n, x, y);
+            e.bondTo(this, type, n, x, y, sendTo);
         } else {
             System.out.println("There weren't enough available bond sites");
 //            System.out.println(this.currBond + " " + n + " " + this.numBonds);
@@ -94,12 +110,22 @@ public class Element {
         }        
     }
     
-    private void bondTo(Element e, String type, int n, int x, int y){
-        assert this.currBond+n <= this.numBonds && e.currBond+n <= e.numBonds;
-        this.bonds[currBond] = e;
-        this.bondTypes[currBond] = type;
+    private void bondTo(Element e, String type, int n, int x, int y, int l){
+        assert this.numBonds()+n <= this.numBonds && e.numBonds()+n <= e.numBonds;
+        this.bonds[l] = e;
+        this.bondTypes[l] = type;
         this.currBond+=n;
         this.x = x;
         this.y = y;
+    }
+    
+    private int numBonds(){
+        int n = 0;
+        for (int i=0; i<4; i++){
+            if (null != bonds[i]){
+                n++;
+            }
+        }
+        return n;
     }
 }
