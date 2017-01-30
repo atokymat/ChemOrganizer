@@ -271,16 +271,17 @@
             <Component class="javax.swing.JComboBox" name="presetBox">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="9">
+                  <StringArray count="10">
                     <StringItem index="0" value="Vinegar / Acetic Acid"/>
                     <StringItem index="1" value="Acetone (Nail Polish Remover)"/>
                     <StringItem index="2" value="Acetylene"/>
                     <StringItem index="3" value="Acrylic Acid"/>
                     <StringItem index="4" value="Butyric Acid"/>
                     <StringItem index="5" value="Chloroform"/>
-                    <StringItem index="6" value="Natural Gas (main component)"/>
-                    <StringItem index="7" value="Drinking Alcohol"/>
-                    <StringItem index="8" value="Rubbing Alcohol"/>
+                    <StringItem index="6" value="Formaldehyde"/>
+                    <StringItem index="7" value="Natural Gas (main component)"/>
+                    <StringItem index="8" value="Drinking Alcohol"/>
+                    <StringItem index="9" value="Rubbing Alcohol"/>
                   </StringArray>
                 </Property>
               </Properties>

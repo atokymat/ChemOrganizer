@@ -157,7 +157,7 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
+        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Formaldehyde", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
 
         jLabel2.setText("Use Preset:");
 
@@ -360,6 +360,8 @@ public class ChemGUI extends javax.swing.JFrame {
             name = "butanoic acid";
         } else if (selected.equals("Chloroform")){
             name = "1,1,1-trichloro methane";
+        } else if (selected.equals("Formaldehyde")){
+            name = "methanal";
         } else if (selected.contains("Natural Gas")){
             name = "methane";
         } else if (selected.equals("Drinking Alcohol")){
