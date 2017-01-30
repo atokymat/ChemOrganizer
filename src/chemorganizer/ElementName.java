@@ -3,18 +3,23 @@ package chemorganizer;
 import java.util.ArrayList;
 
 public class ElementName {
-    String input;
+    String input, hydrogenLetter;
     Element[] baseChain;
     ArrayList<Element> elements = new ArrayList();
     int chainLen;
     String bondType;
     
-    public ElementName(String n) {
+    public ElementName(String n, String hl) {
         this.input = n.toLowerCase();
+        this.hydrogenLetter = hl;
     }
     
     public void generateMap(){
         //Here we set up initial variables for calculations
+        if (this.input.equals("dextrose")){
+            createDextrose();
+            return;
+        }
         String[] splitName = input.split(" ");
         int numBranches = splitName.length;        
         String last = splitName[numBranches-1];
@@ -66,7 +71,7 @@ public class ElementName {
             baseBonds[i] = "single";
         }
         //The base chain is an Element[] for easy access, the carbons are added to it
-        int x = 325 - 40*chainLen/2;
+        int x = 325 - 20*chainLen;
         for (int i=0; i<chainLen; i++){
             baseChain[i] = new Element(x, 350, "Carbon");
             x += 40;
@@ -106,9 +111,6 @@ public class ElementName {
             }
         }
 
-        
-        //Get stuff from the end of the base chain here too "pent-2-ol"
-        
         //Now add all the bonds in the base chain
         for (int i=0; i<chainLen-1; i++){
             try{
@@ -172,14 +174,7 @@ public class ElementName {
                 for (int j=0; j<n.length; j++){
                     //Add a new element off screen with no bond position
                     Element next = new Element(-10, -10, nextName);
-                    int q = -1;
-                    
-                    //Find a free position
-                    for (int k: new int[] {1, 3, 2, 0} ){ //Add the position in this priority
-                        if (baseChain[n[j]].usedSites[k] == false){
-                            q = k;
-                        }
-                    }
+                    int q = baseChain[n[j]].nextFreeTop();
                     if (q == -1){
                         System.out.println("This cannot be made");
                     } else {
@@ -195,8 +190,16 @@ public class ElementName {
             }
         }
 
-        //Don't forget to add Hydrogens to unused places
-        
+        //Add Hydrogens to bonded sites
+        for (int i=0; i<chainLen; i++){
+            int n = 4-baseChain[i].numBonds();
+            for (int j=0; j<n; j++){
+                Element H = new Element(-10, -10, "Hydrogen");
+                H.letter = hydrogenLetter;
+                baseChain[i].bondTo(H, "single", baseChain[i].nextFree());
+                elements.add(H);
+            }
+        }
         
         for (int i=0; i<chainLen; i++){
             elements.add(baseChain[i]);
@@ -204,8 +207,49 @@ public class ElementName {
     }
     
     
-    public void addToCarbon(String a, int i){
+    public void createDextrose(){
+        baseChain = new Element[6];
+        chainLen = 6;
+        int x = 325 - 20*chainLen;
+        for (int i=0; i<chainLen; i++){
+            baseChain[i] = new Element(x, 350, "Carbon");
+            x += 40;
+        }
+
+        for (int i=0; i<chainLen-1; i++){
+            try{
+                baseChain[i].bondTo(baseChain[i+1], "single", 3);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
         
+        Element oxygen = new Element(-10, -10, "Oxygen");
+        baseChain[0].bondTo(oxygen, "double", 2);
+        elements.add(oxygen);
+
+        //Adding the branches to the carbons
+        int[] hydroxyOrder = {0, 1, 0, 0, 0};
+        for (int i=1; i<6; i++){
+            Element hydroxy = new Element(-10, -10, "Hydroxyl");
+            baseChain[i].bondTo(hydroxy, "single", hydroxyOrder[i-1]);
+            elements.add(hydroxy);
+        }
+
+        //Add Hydrogens to bonded sites
+        for (int i=0; i<chainLen; i++){
+            int n = 4-baseChain[i].numBonds();
+            for (int j=0; j<n; j++){
+                Element H = new Element(-10, -10, "Hydrogen");
+                H.letter = hydrogenLetter;
+                baseChain[i].bondTo(H, "single", baseChain[i].nextFree());
+                elements.add(H);
+            }
+        }        
+        
+        for (int i=0; i<chainLen; i++){
+            elements.add(baseChain[i]);
+        }
     }
     
     public int[] parseNumbers(String a){

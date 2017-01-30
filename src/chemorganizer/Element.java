@@ -119,7 +119,7 @@ public class Element {
         this.y = y;
     }
     
-    private int numBonds(){
+    public int numBonds(){
         int n = 0;
         for (int i=0; i<4; i++){
             if (bondTypes[i] != null){
@@ -137,5 +137,23 @@ public class Element {
             }
         }
         return n;
+    }
+    
+    public int nextFree(){
+        for (int i: new int[] {3, 2, 0, 1}){
+            if (!this.usedSites[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public int nextFreeTop(){
+        for (int i: new int[] {0, 2, 3, 1}){
+            if (!this.usedSites[i]){
+                return i;
+            }
+        }
+        return -1;
     }
 }

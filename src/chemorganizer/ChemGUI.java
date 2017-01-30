@@ -20,6 +20,8 @@ public class ChemGUI extends javax.swing.JFrame {
     
     int i0 = -1;
     boolean placeElement = false;
+    String hydrogenLetter = "H";
+    
     String hover;
     
     public ChemGUI() {
@@ -51,6 +53,7 @@ public class ChemGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         presetButton = new javax.swing.JButton();
+        showH = new javax.swing.JCheckBox();
         resetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,20 +61,20 @@ public class ChemGUI extends javax.swing.JFrame {
 
         drawingPanel.setBackground(new java.awt.Color(255, 255, 255));
         drawingPanel.setPreferredSize(new java.awt.Dimension(650, 700));
-        drawingPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                drawingPanelMouseClicked(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                drawingPanelMouseReleased(evt);
-            }
-        });
         drawingPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseMoved(evt);
+            }
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 drawingPanelMouseDragged(evt);
             }
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                drawingPanelMouseMoved(evt);
+        });
+        drawingPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseClicked(evt);
             }
         });
 
@@ -136,7 +139,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addComponent(selectionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actionButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,7 +160,7 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Formaldehyde", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
+        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Dextrose", "Formaldehyde", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
 
         jLabel2.setText("Use Preset:");
 
@@ -170,14 +173,19 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
+        showH.setSelected(true);
+        showH.setText("Show Hydrogens");
+        showH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showHMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(presetButton)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(presetBox, 0, 0, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -186,6 +194,11 @@ public class ChemGUI extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(presetButton)
+                    .addComponent(showH))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,12 +208,14 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(drawButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(presetBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(presetButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(showH)
                 .addContainerGap())
         );
 
@@ -255,7 +270,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private void drawButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawButtonMousePressed
         // TODO add your handling code here:
         resetScreen();
-        ElementName b = new ElementName(drawInput.getText());
+        ElementName b = new ElementName(drawInput.getText(), hydrogenLetter);
         b.generateMap();
         this.elements = b.elements;
         
@@ -360,6 +375,8 @@ public class ChemGUI extends javax.swing.JFrame {
             name = "butanoic acid";
         } else if (selected.equals("Chloroform")){
             name = "1,1,1-trichloro methane";
+        } else if (selected.equals("Dextrose")){
+            name = "Dextrose";
         } else if (selected.equals("Formaldehyde")){
             name = "methanal";
         } else if (selected.contains("Natural Gas")){
@@ -372,12 +389,34 @@ public class ChemGUI extends javax.swing.JFrame {
             System.out.println("Something went wrong in the code");
         }
         
-        ElementName b = new ElementName(name);
+        ElementName b = new ElementName(name, hydrogenLetter);
         b.generateMap();
         this.elements = b.elements;
         
         drawImage(drawingPanel.getGraphics());
     }//GEN-LAST:event_presetButtonMousePressed
+
+    private void showHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showHMouseClicked
+        e = getElementArray();
+        
+        if (showH.isSelected()){
+            hydrogenLetter = "H";
+            for (int i=0; i<e.length; i++){
+                if (e[i].letter.equals("")){
+                    e[i].letter = "H";
+                }
+            }
+        } else {
+            hydrogenLetter = "";
+            for (int i=0; i<e.length; i++){
+                if (e[i].letter.equals("H")){
+                    e[i].letter = "";
+                }
+            }
+        }
+        
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_showHMouseClicked
     
     public void placeElement(int x, int y){
         Element nextElement = new Element(x, y, selectionBoxElement);
@@ -513,5 +552,6 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JButton presetButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JComboBox selectionBox;
+    private javax.swing.JCheckBox showH;
     // End of variables declaration//GEN-END:variables
 }
