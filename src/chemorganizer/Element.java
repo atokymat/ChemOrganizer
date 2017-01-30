@@ -3,7 +3,7 @@ package chemorganizer;
 public class Element {
     
     int x, y;
-    int numBonds, currBond;
+    int maxBonds, currBond;
     String name, letter;
     Element[] bonds = new Element[4];
     String[] bondTypes = new String[4];
@@ -20,16 +20,16 @@ public class Element {
     
     public void addBondNumber(){
         if (this.name.equals("Carbon")){
-            this.numBonds = 4;            
+            this.maxBonds = 4;            
         }
         else if (this.name.equals("Nitrogen")){
-            this.numBonds = 3;
+            this.maxBonds = 3;
         }
         else if (this.name.equals("Oxygen")){
-            this.numBonds = 2;            
+            this.maxBonds = 2;            
         }
         else {
-            this.numBonds = 1;
+            this.maxBonds = 1;
         }
     }
     
@@ -66,7 +66,7 @@ public class Element {
         } else {
             n = 3;
         }        
-        if (this.numBonds()+n <= this.numBonds && e.numBonds()+n <= e.numBonds){
+        if (this.numBonds()+n <= this.maxBonds && e.numBonds()+n <= e.maxBonds){
             this.bonds[location] = e;
             this.bondTypes[location] = type;
             this.currBond += n;
@@ -111,7 +111,7 @@ public class Element {
     }
     
     private void bondTo(Element e, String type, int n, int x, int y, int l){
-        assert this.numBonds()+n <= this.numBonds && e.numBonds()+n <= e.numBonds;
+        assert this.numBonds()+n <= this.maxBonds && e.numBonds()+n <= e.maxBonds;
         this.bonds[l] = e;
         this.bondTypes[l] = type;
         this.currBond+=n;
@@ -122,8 +122,18 @@ public class Element {
     private int numBonds(){
         int n = 0;
         for (int i=0; i<4; i++){
-            if (null != bonds[i]){
-                n++;
+            if (bondTypes[i] != null){
+                switch (bondTypes[i]){
+                    case "single":
+                        n++;
+                        break;
+                    case "double":
+                        n+=2;
+                        break;
+                    default:
+                        n+=3;
+                        break;
+                }
             }
         }
         return n;

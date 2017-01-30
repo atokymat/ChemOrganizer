@@ -47,9 +47,10 @@ public class ChemGUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         drawInput = new javax.swing.JTextArea();
         drawButton = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox();
+        presetBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        presetButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -122,7 +123,7 @@ public class ChemGUI extends javax.swing.JFrame {
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel4)))
                             .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 14, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(selectionBox, 0, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -135,7 +136,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addComponent(selectionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(actionButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -156,38 +157,51 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
 
-        jLabel2.setText("Use Presets:");
+        jLabel2.setText("Use Preset:");
 
         jLabel3.setText("Type an IUPAC name:");
+
+        presetButton.setText("Draw Preset");
+        presetButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                presetButtonMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(presetButton)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(presetBox, 0, 0, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(drawButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(presetBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(drawButton))
+                .addComponent(presetButton)
+                .addContainerGap())
         );
 
         jTabbedPane2.addTab("Draw", jPanel2);
@@ -327,6 +341,41 @@ public class ChemGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         resetScreen();
     }//GEN-LAST:event_resetButtonMousePressed
+
+    private void presetButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_presetButtonMousePressed
+        // TODO add your handling code here:
+        resetScreen();
+        String selected, name = "";
+        selected = (String) presetBox.getSelectedItem();
+        
+        if (selected.contains("Vinegar")){
+            name = "ethanoic acid";
+        } else if (selected.contains("Acetone")){
+            name = "prop-2-one";
+        } else if (selected.equals("Acetylene")){
+            name = "ethyne";
+        } else if (selected.equals("Acrylic Acid")){
+            name = "prop-2-eneoic acid";
+        } else if (selected.equals("Butyric Acid")){
+            name = "butanoic acid";
+        } else if (selected.equals("Chloroform")){
+            name = "1,1,1-trichloro methane";
+        } else if (selected.contains("Natural Gas")){
+            name = "methane";
+        } else if (selected.equals("Drinking Alcohol")){
+            name = "ethanol";
+        } else if (selected.equals("Rubbing Alcohol")){
+            name = "2-propanol";
+        } else {
+            System.out.println("Something went wrong in the code");
+        }
+        
+        ElementName b = new ElementName(name);
+        b.generateMap();
+        this.elements = b.elements;
+        
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_presetButtonMousePressed
     
     public void placeElement(int x, int y){
         Element nextElement = new Element(x, y, selectionBoxElement);
@@ -450,7 +499,6 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JButton drawButton;
     private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -459,6 +507,8 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JComboBox presetBox;
+    private javax.swing.JButton presetButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JComboBox selectionBox;
     // End of variables declaration//GEN-END:variables

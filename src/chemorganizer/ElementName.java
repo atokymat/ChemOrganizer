@@ -15,10 +15,11 @@ public class ElementName {
     
     public void generateMap(){
         //Here we set up initial variables for calculations
-        String[] branches = input.split(" ");
-        int numBranches = branches.length;        
-        String last = branches[numBranches-1];
-        String base;
+        String[] splitName = input.split(" ");
+        int numBranches = splitName.length;        
+        String last = splitName[numBranches-1];
+        String base, branches;
+        String[] splitBranches;
         String[] baseBonds;
         boolean addAcid = false;
         //Set up bonds by default to be single
@@ -26,12 +27,17 @@ public class ElementName {
         
         //Some elements end with "-oic acid", so splitting on " " will miss the base chain
         if (last.equals("acid")){
-            base = branches[numBranches-2];
+            base = splitName[numBranches-2];
             addAcid = true;
         } else {
-            base = branches[numBranches-1];
+            base = splitName[numBranches-1];
         }
-                
+        
+        branches = splitName[0];
+        if (branches.equals(base)){
+            branches = "";
+        }
+        
         //Here we take its name and determine how many carbons are in the main chain
         if (base.contains("met"))
             chainLen = 1;
@@ -72,7 +78,12 @@ public class ElementName {
         if (base.contains("ene")){
             for(int i=0; i<name.length; i++){
                 if (name[i].contains("ene")){
-                    int[] num = parseNumbers(name[i-1]);
+                    int[] num;
+                    try {
+                        num = parseNumbers(name[i-1]);
+                    } catch (Exception e){
+                        num = new int[] {0};
+                    }
                     for (int j=0; j<num.length; j++){
                         baseBonds[num[j]] = "double";
                     }
@@ -82,7 +93,12 @@ public class ElementName {
         if (base.contains("yne")){
             for(int i=0; i<name.length; i++){
                 if (name[i].contains("yne")){
-                    int[] num = parseNumbers(name[i-1]);
+                    int[] num;
+                    try {
+                        num = parseNumbers(name[i-1]);
+                    } catch (Exception e){
+                        num = new int[] {0};
+                    }
                     for (int j=0; j<num.length; j++){
                         baseBonds[num[j]] = "triple";
                     }
@@ -112,51 +128,73 @@ public class ElementName {
             elements.add(Hydroxyl);
         }
         for (int i=0; i<name.length; i++){
+            String numbers;
+            try {
+                numbers = name[i-1];
+            } catch (Exception e){
+                numbers = "1";
+            }
+            //if the previous information was not a specific number
+            if (numbers.matches("^[^0-9]+$")){
+                numbers = "1";
+            }
             if (name[i].contains("ol")){
-                String chain = name[i-1] + "-hydroxyl ";
-                input = chain + input;
+                String chain = numbers + "-hydroxyl-";
+                branches = chain + branches;
             }
             if (name[i].contains("al")){
-                String chain = "1-carbonyl ";
-                input = chain + input;
+                String chain = "carbonyl-";
+                branches = chain + branches;
             }
             if (name[i].contains("amine")){
-                String chain = name[i-1] + "-amino ";
-                input = chain + input;
+                String chain = numbers + "-amino-";
+                branches = chain + branches;
             }
             if (name[i].contains("one")){
-                String chain = name[i-1] + "-carbonyl";
-                input = chain + input;
+                String chain = numbers + "-carbonyl-";
+                branches = chain + branches;
             }
         }
-        branches = input.split(" ");
+        
+        splitBranches = branches.split("-");
         
         //Adding the branches to the carbons
-        for (int i=0; i<numBranches; i++){
-            if (branches[i].equals(base)){
-                break;
-            }
-            String[] branchInfo = branches[i].split("-");
-            int[] n = parseNumbers(branchInfo[0]);
-            String nextName = parseName(branchInfo[1]);         
-            for (int j=0; j<n.length; j++){
-                Element next = new Element(10, 10, nextName);
-                int q=-1;
-                for (int k=3; k>=0; k--){
-                    if (baseChain[n[j]].usedSites[k] == false){
-                        q = k;
+        for (int i=0; i<splitBranches.length; i++){
+            //if the string matches regex for no digits in [0, 9], then it is a branch name
+            if (splitBranches[i].matches("^[^0-9]+$")){
+                int[] n;
+                try{
+                    n = parseNumbers(splitBranches[i-1]); //Number precedes branch name 
+                } catch(Exception e){
+                    n = new int[] {0}; //Assume carbon #1 by default
+                }
+                String nextName = parseName(splitBranches[i]);
+                for (int j=0; j<n.length; j++){
+                    //Add a new element off screen with no bond position
+                    Element next = new Element(-10, -10, nextName);
+                    int q = -1;
+                    
+                    //Find a free position
+                    for (int k: new int[] {1, 3, 2, 0} ){ //Add the position in this priority
+                        if (baseChain[n[j]].usedSites[k] == false){
+                            q = k;
+                        }
+                    }
+                    if (q == -1){
+                        System.out.println("This cannot be made");
+                    } else {
+                        if (next.name.equals("Hydroxyl") && q == 2){
+                            next.letter = "HO";
+                        } else if (next.name.equals("Amino") && q == 2){
+                            next.letter = "H\u2082N";
+                        }
+                        baseChain[n[j]].bondTo(next, bondType, q);
+                        elements.add(next);
                     }
                 }
-                if (next.name.equals("Hydroxyl") && q == 2){
-                    next.letter = "HO";
-                } else if (next.name.equals("Amino") && q == 2){
-                    next.letter = "H\u2082N";
-                }
-                baseChain[n[j]].bondTo(next, bondType, q);
-                elements.add(next);
             }
         }
-        
+
         //Don't forget to add Hydrogens to unused places
         
         
@@ -196,7 +234,7 @@ public class ElementName {
         } else if (a.contains("amino")){
             name = "Amino";
             bondType = "single";
-        } else if (a.contains("hydroxyl")){
+        } else if (a.contains("hydroxy")){
             name = "Hydroxyl";
             bondType = "single";
         } else if (a.contains("carbonyl") || a.contains("oxo")){
