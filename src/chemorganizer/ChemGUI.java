@@ -38,7 +38,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         drawingPanel = new javax.swing.JPanel();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jTabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         selectionBox = new javax.swing.JComboBox();
         actionButton = new javax.swing.JButton();
@@ -145,7 +145,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane2.addTab("Build", jPanel1);
+        jTabbedPane.addTab("Build", jPanel1);
 
         drawInput.setColumns(20);
         drawInput.setLineWrap(true);
@@ -219,7 +219,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Draw", jPanel2);
+        jTabbedPane.addTab("Draw", jPanel2);
 
         resetButton.setText("Reset Screen");
         resetButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -236,7 +236,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resetButton))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -245,7 +245,7 @@ public class ChemGUI extends javax.swing.JFrame {
             .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(resetButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -284,7 +284,7 @@ public class ChemGUI extends javax.swing.JFrame {
         
         if (placeElement){
             placeElement(x, y);
-        } else if (mouseDragFunction.equals("Move")){
+        } else if (mouseDragFunction.equals("Move") && jTabbedPane.getSelectedIndex()==0){
             if (i0 != -1){
                 e[i0].x = x;
                 e[i0].y = y;
@@ -297,7 +297,7 @@ public class ChemGUI extends javax.swing.JFrame {
                     }
                 }
             }
-        } else if (mouseDragFunction.equals("Bond")){
+        } else if (mouseDragFunction.equals("Bond") && jTabbedPane.getSelectedIndex()==0){
             //Bond making feature, low priority
             //MAKE ABSOLUTELY SURE THAT THE BOND NUMBERS MATCH ALWAYS!!
         } // The Delete feature is handled in drawingPanelMouseClicked
@@ -328,7 +328,7 @@ public class ChemGUI extends javax.swing.JFrame {
         int y = evt.getY();
         if (placeElement){
             placeElement(x, y);
-        } else if (mouseDragFunction.equals("Delete")){
+        } else if (mouseDragFunction.equals("Delete") && jTabbedPane.getSelectedIndex()==0){
             for (int i=0; i<e.length; i++){
                 if (getDistance(x, y, e[i].x, e[i].y) < 15){                        
                     elements.remove(e[i]);
@@ -547,7 +547,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTabbedPane jTabbedPane;
     private javax.swing.JComboBox presetBox;
     private javax.swing.JButton presetButton;
     private javax.swing.JButton resetButton;
