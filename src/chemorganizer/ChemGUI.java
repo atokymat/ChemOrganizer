@@ -1,6 +1,7 @@
 package chemorganizer;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,8 +12,17 @@ public class ChemGUI extends javax.swing.JFrame {
     /**
      * Creates new form ChemGUI
      */
-    String actionButtonMode = "Build";
+    String mouseDragFunction = "Move";
+    String selectionBoxElement = "";
+    
     ArrayList<Element> elements = new ArrayList();
+    Element[] e = new Element[0];
+    
+    int i0 = -1;
+    boolean placeElement = false;
+    String hydrogenLetter = "H";
+    
+    String hover;
     
     public ChemGUI() {
         initComponents();
@@ -28,14 +38,45 @@ public class ChemGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         drawingPanel = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTabbedPane = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
         selectionBox = new javax.swing.JComboBox();
+        actionButton = new javax.swing.JButton();
+        clickComboBox = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         drawInput = new javax.swing.JTextArea();
-        actionButton = new javax.swing.JButton();
-        nameButton = new javax.swing.JButton();
+        drawButton = new javax.swing.JButton();
+        presetBox = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        presetButton = new javax.swing.JButton();
+        showH = new javax.swing.JCheckBox();
+        resetButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(815, 700));
+
+        drawingPanel.setBackground(new java.awt.Color(255, 255, 255));
+        drawingPanel.setPreferredSize(new java.awt.Dimension(650, 700));
+        drawingPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseMoved(evt);
+            }
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseDragged(evt);
+            }
+        });
+        drawingPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                drawingPanelMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(drawingPanel);
         drawingPanel.setLayout(drawingPanelLayout);
@@ -48,26 +89,7 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGap(0, 700, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPane1StateChanged(evt);
-            }
-        });
-
         selectionBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Single Carbon", "Carbon Chain", "Cyclic Carbon Chain", "Aromatic Carbon Chain", " ", "Hydrogen", "Oxygen", "Nitrogen", " ", "Fluorine", "Chlorine", "Bromine", "Iodine" }));
-        selectionBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectionBoxActionPerformed(evt);
-            }
-        });
-        jTabbedPane1.addTab("Build", selectionBox);
-
-        drawInput.setColumns(20);
-        drawInput.setLineWrap(true);
-        drawInput.setRows(5);
-        jScrollPane1.setViewportView(drawInput);
-
-        jTabbedPane1.addTab("Draw", jScrollPane1);
 
         actionButton.setText("Build");
         actionButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -76,10 +98,133 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        nameButton.setLabel("Name");
-        nameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        clickComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Move Element", "Bond Element", "Delete Element" }));
+        clickComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                clickComboBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel1.setText("Click & Drag Function");
+
+        jLabel4.setText("Add Element");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel4)))
+                            .addComponent(actionButton, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(selectionBox, 0, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(selectionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(actionButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(clickComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane.addTab("Build", jPanel1);
+
+        drawInput.setColumns(20);
+        drawInput.setLineWrap(true);
+        drawInput.setRows(5);
+        jScrollPane1.setViewportView(drawInput);
+
+        drawButton.setText("Draw");
+        drawButton.setToolTipText("");
+        drawButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                nameButtonMousePressed(evt);
+                drawButtonMousePressed(evt);
+            }
+        });
+
+        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Dextrose", "Formaldehyde", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
+
+        jLabel2.setText("Use Preset:");
+
+        jLabel3.setText("Type an IUPAC name:");
+
+        presetButton.setText("Draw Preset");
+        presetButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                presetButtonMousePressed(evt);
+            }
+        });
+
+        showH.setSelected(true);
+        showH.setText("Show Hydrogens");
+        showH.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showHMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(drawButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(presetBox, 0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(presetButton)
+                    .addComponent(showH))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(drawButton)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(presetBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(presetButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(showH)
+                .addContainerGap())
+        );
+
+        jTabbedPane.addTab("Draw", jPanel2);
+
+        resetButton.setText("Reset Screen");
+        resetButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                resetButtonMousePressed(evt);
             }
         });
 
@@ -88,80 +233,203 @@ public class ChemGUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(actionButton, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resetButton))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(drawingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(actionButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nameButton)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(resetButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectionBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectionBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_selectionBoxActionPerformed
-
-    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        if (actionButton.getText().equals("Build")){
-            //Change the action button to draw and listener to the draw action listener            
-            actionButton.setText("Draw");            
-            actionButtonMode = "Draw";
-            
-            nameButton.setEnabled(false);
-        } else {
-            //Change the action button to build and listener to the build action listener
-            actionButton.setText("Build");   
-            actionButtonMode = "Build";
-            
-            nameButton.setEnabled(true);
-        }
-    }//GEN-LAST:event_jTabbedPane1StateChanged
-
     private void actionButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actionButtonMousePressed
-        if (actionButtonMode.equals("Build")){
-            //Build actions
-            placeOnScreen();
-        } else {
-            //Draw actions
+        selectionBoxElement = (String) selectionBox.getSelectedItem();
+        
+        if (!selectionBoxElement.equals(" ")){
+            if (selectionBoxElement.equals("Single Carbon") || selectionBoxElement.contains("Carbon")){
+                selectionBoxElement = "Carbon";
+            }
+            
+            placeElement = true;
+            hover = new Element(-1, -1, selectionBoxElement).letter;
         }
     }//GEN-LAST:event_actionButtonMousePressed
 
-    private void nameButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nameButtonMousePressed
+    private void drawButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawButtonMousePressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nameButtonMousePressed
-
-    
-    private void placeOnScreen(){
-        //For adding the appropriate group to the screen
-        String name = (String) selectionBox.getSelectedItem();
-        if (!name.equals(" ")){ //Ignores the empty space separators
-            
-            if (name.equals("Single Carbon")){
-                name = "Carbon";
-            }
-            Element nextElement = new Element(50, 50, name);
-            elements.add(nextElement);
-            drawImage(drawingPanel.getGraphics());
-        }
-    }
+        resetScreen();
+        ElementName b = new ElementName(drawInput.getText(), hydrogenLetter);
+        b.generateMap();
+        this.elements = b.elements;
         
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_drawButtonMousePressed
+
+    private void drawingPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseDragged
+        int x = evt.getX();
+        int y = evt.getY();
+        e = getElementArray();
+        
+        if (placeElement){
+            placeElement(x, y);
+        } else if (mouseDragFunction.equals("Move") && jTabbedPane.getSelectedIndex()==0){
+            if (i0 != -1){
+                e[i0].x = x;
+                e[i0].y = y;
+                drawImage(drawingPanel.getGraphics());
+            } else {
+                for (int i=0; i<e.length; i++){
+                    if (getDistance(x, y, e[i].x, e[i].y) < 15){
+                        i0 = i;
+                        break;
+                    }
+                }
+            }
+        } else if (mouseDragFunction.equals("Bond") && jTabbedPane.getSelectedIndex()==0){
+            //Bond making feature, low priority
+            //MAKE ABSOLUTELY SURE THAT THE BOND NUMBERS MATCH ALWAYS!!
+        } // The Delete feature is handled in drawingPanelMouseClicked
+    }//GEN-LAST:event_drawingPanelMouseDragged
+
+    private void drawingPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseReleased
+        i0 = -1;
+    }//GEN-LAST:event_drawingPanelMouseReleased
+
+    private void clickComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_clickComboBoxItemStateChanged
+        String boxSelection = (String) clickComboBox.getSelectedItem();
+        switch(boxSelection){
+            case "Move Element":
+                mouseDragFunction = "Move";
+                break;
+            case "Bond Element":
+                mouseDragFunction = "Bond";
+                break;
+            case "Delete Element":
+                mouseDragFunction = "Delete";
+                break;
+        }
+    }//GEN-LAST:event_clickComboBoxItemStateChanged
+
+    private void drawingPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseClicked
+        // TODO add your handling code here:
+        int x = evt.getX();
+        int y = evt.getY();
+        if (placeElement){
+            placeElement(x, y);
+        } else if (mouseDragFunction.equals("Delete") && jTabbedPane.getSelectedIndex()==0){
+            for (int i=0; i<e.length; i++){
+                if (getDistance(x, y, e[i].x, e[i].y) < 15){                        
+                    elements.remove(e[i]);
+                    drawImage(drawingPanel.getGraphics());
+                    break;
+                }
+            }
+        }
+    }//GEN-LAST:event_drawingPanelMouseClicked
+
+    private void drawingPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_drawingPanelMouseMoved
+        // TODO add your handling code here:
+        int x = evt.getX();
+        int y = evt.getY();
+        if (placeElement){
+            Graphics g = drawingPanel.getGraphics();
+            drawImage(g);
+            g.setFont(new Font("default", Font.PLAIN, 12));
+            g.setColor(Color.GRAY);
+            g.drawString(hover, x-5, y+5);
+        }
+    }//GEN-LAST:event_drawingPanelMouseMoved
+
+    private void resetButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resetButtonMousePressed
+        // TODO add your handling code here:
+        resetScreen();
+    }//GEN-LAST:event_resetButtonMousePressed
+
+    private void presetButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_presetButtonMousePressed
+        // TODO add your handling code here:
+        resetScreen();
+        String selected, name = "";
+        selected = (String) presetBox.getSelectedItem();
+        
+        if (selected.contains("Vinegar")){
+            name = "ethanoic acid";
+        } else if (selected.contains("Acetone")){
+            name = "prop-2-one";
+        } else if (selected.equals("Acetylene")){
+            name = "ethyne";
+        } else if (selected.equals("Acrylic Acid")){
+            name = "prop-2-eneoic acid";
+        } else if (selected.equals("Butyric Acid")){
+            name = "butanoic acid";
+        } else if (selected.equals("Chloroform")){
+            name = "1,1,1-trichloro methane";
+        } else if (selected.equals("Dextrose")){
+            name = "Dextrose";
+        } else if (selected.equals("Formaldehyde")){
+            name = "methanal";
+        } else if (selected.contains("Natural Gas")){
+            name = "methane";
+        } else if (selected.equals("Drinking Alcohol")){
+            name = "ethanol";
+        } else if (selected.equals("Rubbing Alcohol")){
+            name = "2-propanol";
+        } else {
+            System.out.println("Something went wrong in the code");
+        }
+        
+        ElementName b = new ElementName(name, hydrogenLetter);
+        b.generateMap();
+        this.elements = b.elements;
+        
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_presetButtonMousePressed
+
+    private void showHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showHMouseClicked
+        e = getElementArray();
+        
+        if (showH.isSelected()){
+            hydrogenLetter = "H";
+            for (int i=0; i<e.length; i++){
+                if (e[i].letter.equals("")){
+                    e[i].letter = "H";
+                }
+            }
+        } else {
+            hydrogenLetter = "";
+            for (int i=0; i<e.length; i++){
+                if (e[i].letter.equals("H")){
+                    e[i].letter = "";
+                }
+            }
+        }
+        
+        drawImage(drawingPanel.getGraphics());
+    }//GEN-LAST:event_showHMouseClicked
+    
+    public void placeElement(int x, int y){
+        Element nextElement = new Element(x, y, selectionBoxElement);
+        elements.add(nextElement);
+        drawImage(drawingPanel.getGraphics());
+        placeElement = false;        
+    }        
+    
+    public void resetScreen(){
+        elements = new ArrayList();
+        drawImage(drawingPanel.getGraphics());
+    }
+    
     private void drawImage(Graphics jPanelGraphics){
         BufferedImage bi = new BufferedImage(650, 700, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = (Graphics2D) bi.getGraphics();
@@ -169,11 +437,47 @@ public class ChemGUI extends javax.swing.JFrame {
         g.setColor(Color.white);
         g.fillRect(0, 0, 650, 700);
         g.setColor(Color.black);
-        
-        Element[] e = getElementArray();
+        e = getElementArray();
         for (int i=0; i<e.length; i++){
-            g.drawString(e[i].letter, e[i].x, e[i].y);
-            g.drawOval(e[i].x-7, e[i].y-16, 22, 22);
+            //Draw lines to represent bonds
+            if (e[i].bonds[0] != null){
+                if (e[i].bondTypes[0].equals("single")) {
+                    g.drawLine(e[i].x+2, e[i].y-12, e[i].bonds[0].x+2, e[i].bonds[0].y+6);
+                } else if (e[i].bondTypes[0].equals("double")) {
+                    g.drawLine(e[i].x+4, e[i].y-12, e[i].bonds[0].x+4, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x, e[i].y-12, e[i].bonds[0].x, e[i].bonds[0].y+6);
+                } else {
+                    g.drawLine(e[i].x+5, e[i].y-12, e[i].bonds[0].x+5, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x+2, e[i].y-12, e[i].bonds[0].x+2, e[i].bonds[0].y+6);
+                    g.drawLine(e[i].x-1, e[i].y-12, e[i].bonds[0].x-1, e[i].bonds[0].y+6);
+
+                }                    
+            }            
+            if (e[i].bonds[3] != null){
+                if (e[i].bondTypes[3].equals("single")) {
+                    g.drawLine(e[i].x+10, e[i].y-2, e[i].bonds[3].x-8, e[i].bonds[3].y-2);
+                } else if (e[i].bondTypes[3].equals("double")) {
+                    g.drawLine(e[i].x+10, e[i].y, e[i].bonds[3].x-8, e[i].bonds[3].y);
+                    g.drawLine(e[i].x+10, e[i].y-4, e[i].bonds[3].x-8, e[i].bonds[3].y-4);
+                } else {
+                    g.drawLine(e[i].x+10, e[i].y+1, e[i].bonds[3].x-8, e[i].bonds[3].y+1);
+                    g.drawLine(e[i].x+10, e[i].y-2, e[i].bonds[3].x-8, e[i].bonds[3].y-2);
+                    g.drawLine(e[i].x+10, e[i].y-5, e[i].bonds[3].x-8, e[i].bonds[3].y-5);
+
+                }                    
+            }
+
+            if (e[i].letter.equals("C")){
+                g.setFont(new Font("default", Font.BOLD, 20));
+            } else {
+                g.setFont(new Font("default", Font.PLAIN, 16));
+            }
+            if (e[i].letter.equals("HO") || e[i].letter.equals("H\u2082N")){
+                g.drawString(e[i].letter, e[i].x-22, e[i].y+5);
+            } else {
+                g.drawString(e[i].letter, e[i].x-5, e[i].y+5);
+            }
+
         }
         
         jPanelGraphics.drawImage(bi, 0, 0, rootPane);
@@ -182,13 +486,17 @@ public class ChemGUI extends javax.swing.JFrame {
     public Element[] getElementArray(){
         int l = elements.size();
         Object[] objects = elements.toArray();
-        Element[] e = new Element[l];
+        Element[] e0 = new Element[l];
         
         for (int i=0; i<l; i++){
-            e[i] = (Element) objects[i];
+            e0[i] = (Element) objects[i];
         }
         
-        return e;
+        return e0;
+    }
+    
+    public double getDistance(int x1, int y1, int x2, int y2){
+        return Math.sqrt(Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2));
     }
     
     /**
@@ -199,7 +507,8 @@ public class ChemGUI extends javax.swing.JFrame {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+         
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -227,11 +536,22 @@ public class ChemGUI extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton actionButton;
+    private javax.swing.JComboBox clickComboBox;
+    private javax.swing.JButton drawButton;
     private javax.swing.JTextArea drawInput;
     private javax.swing.JPanel drawingPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JButton nameButton;
+    private javax.swing.JTabbedPane jTabbedPane;
+    private javax.swing.JComboBox presetBox;
+    private javax.swing.JButton presetButton;
+    private javax.swing.JButton resetButton;
     private javax.swing.JComboBox selectionBox;
+    private javax.swing.JCheckBox showH;
     // End of variables declaration//GEN-END:variables
 }
