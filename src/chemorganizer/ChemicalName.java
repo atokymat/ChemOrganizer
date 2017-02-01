@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ChemicalName {
     //Has an input and the letter to display hydrogen
-    String input, hydrogenLetter;
+    String input, hydrogenLetter, output;
     //Stores a bond type (single bond, double bond, triple bond)
     String bondType = "";
     //The base carbon chain, and its length
@@ -17,6 +17,7 @@ public class ChemicalName {
     public ChemicalName(String n, String hl) {
         this.input = n.toLowerCase();
         this.hydrogenLetter = hl;
+        this.output = "<html>Building molecule...<br>";
         this.generateMap();
     }
     
@@ -85,7 +86,8 @@ public class ChemicalName {
             chainLen = 10;
         else{
             //Stop the program from running bad input
-            System.out.printf("\"%s\" is not a real base\n", base);
+            output = output + String.format("\"%s\" is not a real base<br>", base);
+            output = output + "BUILD FAILED<br></html>";
             return;
         }
         
@@ -123,7 +125,7 @@ public class ChemicalName {
                         //Some names cause too many bonds on a carbon, which is illegal
                         //The input was invalid, and the program assumes a single bond instead
                         if (num[j] == chainLen-1){
-                            System.out.printf("Cannot place a bond following carbon #%d\n", chainLen);
+                            output = output + String.format("Cannot place a bond following carbon #%d<br>", chainLen);
                         } else if (num[j] != -1){
                             baseBonds[num[j]] = "double";
                         }
@@ -145,7 +147,7 @@ public class ChemicalName {
                         //Some names cause too many bonds on a carbon, which is illegal
                         //The input was invalid, and the program assumes a single bond instead
                         if (num[j] == chainLen-1){
-                            System.out.printf("Cannot place a bond following carbon #%d\n", chainLen);
+                            output = output + String.format("Cannot place a bond following carbon #%d<br>", chainLen);
                         } else if (num[j] != -1){
                             baseBonds[num[j]] = "triple";
                         }
@@ -160,7 +162,8 @@ public class ChemicalName {
                 baseChain[i].bondTo(baseChain[i+1], baseBonds[i], 3);
             } else {
                 //Error message here should not need to run, just a safety measure
-                System.out.printf("Cannot add a %s bond following carbon %d\n", baseBonds[i], i+1);
+                output = output + String.format("Cannot add a %s bond following carbon %d<br>",
+                        baseBonds[i], i+1);
                 baseChain[i].bondTo(baseChain[i+1], "single", 3);
             }
         }
@@ -238,7 +241,7 @@ public class ChemicalName {
                         Element next = new Element(nextName);
                         int q = baseChain[n[j]].nextFreeTop();
                         if (q == -1){
-                            System.out.printf("There aren't enough free bonds to place a(n) %s to carbon #%d\n",
+                            output = output + String.format("There aren't enough free bonds to place a(n) %s to carbon #%d<br>",
                                     nextName.toLowerCase(), n[j]+1);
                         } else {
                             //Reverse the lettering of a backwards group with more than one element letter
@@ -276,6 +279,8 @@ public class ChemicalName {
                 }
             }
         }
+        
+        output = output + "BUILD SUCCESSFUL<br></html>";
     }
     
     public void createDextrose(){
@@ -324,6 +329,8 @@ public class ChemicalName {
                 elements.add(H);
             }
         }
+        
+        output = output + "BUILD SUCCESSFUL<br></html>";
     }
     
     public int[] parseNumbers(String a){
@@ -334,7 +341,7 @@ public class ChemicalName {
             n[i] = Integer.parseInt(a0[i]) - 1;
             if (n[i] >= chainLen || n[i] < 0){
                 //gives an error number of -1 if the number is invalid
-                System.out.printf("\"%d\" is not a valid carbon number\n", n[i]+1);
+                output = output + String.format("\"%d\" is not a valid carbon number<br>", n[i]+1);
                 n[i] = -1;
             }
         }
@@ -370,27 +377,35 @@ public class ChemicalName {
             name = "Carbon";
             bondType = "single";
         } else if (a.contains("ethyl")){
-            addAlkylBranch(2, n);
+            addAlkylBranch(2, n, "ethyl");
             name = "";
         } else if (a.contains("propyl")){
-            addAlkylBranch(3, n);
+            addAlkylBranch(3, n, "propyl");
         } else if (a.contains("butyl")){
-            addAlkylBranch(4, n);
+            addAlkylBranch(4, n, "butyl");
         } else {
-            System.out.printf("\"%s\" could not be added as a branch\n", a);
+            output = output + String.format("\"%s\" could not be added as a branch<br>", a);
         }
         return name;
     }
 
-    public void addAlkylBranch(int l, int[] pos){
+    public void addAlkylBranch(int l, int[] pos, String name){
         //Adds an alkyl branch (which has length > 1) to the base chain
         
         //Array which stores the last carbons, bonds it to the base chain
         Element[] nextCarbon = new Element[pos.length];
         for (int i=0; i<pos.length; i++){
-            nextCarbon[i] = new Element("Carbon");
-            baseChain[pos[i]].bondTo(nextCarbon[i], "single", baseChain[pos[i]].nextFreeTopB());
-            elements.add(nextCarbon[i]);
+            if (pos[i] != -1){
+                int p = baseChain[pos[i]].nextFreeTopB();
+                if (p != -1){
+                    nextCarbon[i] = new Element("Carbon");
+                    baseChain[pos[i]].bondTo(nextCarbon[i], "single", p);
+                    elements.add(nextCarbon[i]);
+                } else {
+                    output = output + String.format("Could not add a %s branch to carbon #%d",
+                            name, pos[i]);
+                }
+            }
         }
         
         //Adds more carbons to the alkyl branch until it reaches the branch length
@@ -398,10 +413,12 @@ public class ChemicalName {
             for (int j=1; j<l; j++){
                 //Makes a new carbon, and bonds it to the last added carbon
                 //then resets the last added carbon to prepare for the next carbon
-                Element nextC = new Element("Carbon");
-                nextCarbon[i].bondTo(nextC, "single", nextCarbon[i].nextFreeTopB());
-                nextCarbon[i] = nextC;
-                elements.add(nextC);
+                if (nextCarbon[i] != null){
+                    Element nextC = new Element("Carbon");
+                    nextCarbon[i].bondTo(nextC, "single", nextCarbon[i].nextFreeTopB());
+                    nextCarbon[i] = nextC;
+                    elements.add(nextC);
+                }
             }
         }
     } 

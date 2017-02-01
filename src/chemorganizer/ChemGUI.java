@@ -43,6 +43,7 @@ public class ChemGUI extends javax.swing.JFrame {
         presetButton = new javax.swing.JButton();
         showH = new javax.swing.JCheckBox();
         resetButton = new javax.swing.JButton();
+        outputLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -148,7 +149,9 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(drawingPanel, 618, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outputLabel))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -157,6 +160,8 @@ public class ChemGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(outputLabel)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -173,7 +178,9 @@ public class ChemGUI extends javax.swing.JFrame {
         resetScreen();
         ChemicalName b = new ChemicalName(drawInput.getText(), hydrogenLetter);
         this.elements = b.elements;
-        
+        outputLabel.setText(b.output);
+        //Sleep so that the text update does not overwrite the graphics update
+        sleep(100);
         drawImage();
     }//GEN-LAST:event_drawButtonMousePressed
 
@@ -208,7 +215,9 @@ public class ChemGUI extends javax.swing.JFrame {
         }
         ChemicalName b = new ChemicalName(name, hydrogenLetter);
         this.elements = b.elements;
-        
+        outputLabel.setText(b.output);
+        //Sleep so that the text update does not overwrite the graphics update
+        sleep(100);
         drawImage();
     }//GEN-LAST:event_presetButtonMousePressed
 
@@ -311,6 +320,13 @@ public class ChemGUI extends javax.swing.JFrame {
         return e0;
     }
     
+    public void sleep(int numMillis){
+        try {
+            Thread.sleep(numMillis);
+        } catch (Exception e){
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -354,6 +370,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel outputLabel;
     private javax.swing.JComboBox presetBox;
     private javax.swing.JButton presetButton;
     private javax.swing.JButton resetButton;
