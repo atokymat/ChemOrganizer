@@ -296,7 +296,7 @@ public class ChemicalName {
         
         //Dextrose is an aldehyde, add the oxygen
         Element oxygen = new Element("Oxygen");
-        baseChain[0].bondTo(oxygen, "double", 2);
+        baseChain[0].bondTo(oxygen, "double", 0);
         elements.add(oxygen);
 
         //Adding the hydroxyl branches to the carbons
