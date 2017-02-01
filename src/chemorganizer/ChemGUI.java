@@ -74,7 +74,7 @@ public class ChemGUI extends javax.swing.JFrame {
             }
         });
 
-        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Dextrose", "Formaldehyde", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
+        presetBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Vinegar / Acetic Acid", "Acetone (Nail Polish Remover)", "Acetylene", "Acrylic Acid", "Butyric Acid", "Chloroform", "Dextrose", "Ethylene glycol (antifreeze)", "Formaldehyde", "Glycerol", "Lactic Acid", "Natural Gas (main component)", "Drinking Alcohol", "Rubbing Alcohol" }));
 
         jLabel2.setText("Use Preset:");
 
@@ -197,15 +197,21 @@ public class ChemGUI extends javax.swing.JFrame {
         } else if (selected.equals("Acetylene")){
             name = "ethyne";
         } else if (selected.equals("Acrylic Acid")){
-            name = "prop-2-eneoic acid";
+            name = "prop-2-enoic acid";
         } else if (selected.equals("Butyric Acid")){
             name = "butanoic acid";
         } else if (selected.equals("Chloroform")){
             name = "1,1,1-trichloro methane";
         } else if (selected.equals("Dextrose")){
             name = "Dextrose";
+        } else if (selected.contains("Ethylene glycol")){
+            name = "eth-1,2-diol";
         } else if (selected.equals("Formaldehyde")){
             name = "methanal";
+        } else if (selected.equals("Glycerol")){
+            name = "prop-1,2,3-triol";
+        } else if (selected.equals("Lactic Acid")){
+            name = "2-hydroxy propanoic acid";
         } else if (selected.contains("Natural Gas")){
             name = "methane";
         } else if (selected.equals("Drinking Alcohol")){

@@ -64,26 +64,47 @@ public class ChemicalName {
 
         
         //Take the name and determine how many carbons are in the main chain
-        if (base.contains("meth"))
+        String baseName = "";
+        if (base.contains("meth")){
             chainLen = 1;
-        else if (base.contains("eth"))
+            baseName = "meth";
+        }
+        else if (base.contains("eth")){
             chainLen = 2;
-        else if (base.contains("prop"))
+            baseName = "eth";
+        }
+        else if (base.contains("prop")){
             chainLen = 3;
-        else if (base.contains("but"))
+            baseName = "prop";
+        }
+        else if (base.contains("but")){
             chainLen = 4;
-        else if (base.contains("pent"))
+            baseName = "but";
+        }
+        else if (base.contains("pent")){
             chainLen = 5;
-        else if (base.contains("hex"))
+            baseName = "pent";
+        }
+        else if (base.contains("hex")){
             chainLen = 6;
-        else if (base.contains("hept"))
+            baseName = "hex";
+        }
+        else if (base.contains("hept")){
             chainLen = 7;
-        else if (base.contains("oct"))
+            baseName = "hept";
+        }
+        else if (base.contains("oct")){
             chainLen = 8;
-        else if (base.contains("non"))
+            baseName = "oct";
+        }
+        else if (base.contains("non")){
             chainLen = 9;
-        else if (base.contains("dec"))
+            baseName = "non";
+        }
+        else if (base.contains("dec")){
             chainLen = 10;
+            baseName = "dec";
+        }
         else{
             //Stop the program from running bad input
             output = output + String.format("\"%s\" is not a real base<br>", base);
@@ -110,10 +131,15 @@ public class ChemicalName {
         //Bonds in the base chain are not necessarily all single bonds
         String[] name = base.split("-");
         
+        //Output if a base chain was assumed. If the base matches exactly, this is not outputted
+        if (!base.substring(0, baseName.length()).equals(baseName) || !name[0].equals(baseName)){
+            output = output + String.format("Assumed %sane is the base chain<br>", baseName);
+        }
+        
         //Finds double bonds in the main chain
-        if (base.contains("ene")){
+        if (base.contains("en")){
             for(int i=0; i<name.length; i++){
-                if (name[i].contains("ene")){
+                if (name[i].contains("en")){
                     //num will store the location of the double bonds
                     int[] num;
                     try {
@@ -134,9 +160,9 @@ public class ChemicalName {
             }
         }
         //Uses the same process to find triple bonds in the main chain
-        if (base.contains("yne")){
+        if (base.contains("yn")){
             for(int i=0; i<name.length; i++){
-                if (name[i].contains("yne")){
+                if (name[i].contains("yn")){
                     int[] num;
                     try {
                         num = parseNumbers(name[i-1]);
