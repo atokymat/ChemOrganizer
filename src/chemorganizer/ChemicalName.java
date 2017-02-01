@@ -2,24 +2,34 @@ package chemorganizer;
 
 import java.util.ArrayList;
 
-public class ElementName {
+public class ChemicalName {
+    //Has an input and the letter to display hydrogen
     String input, hydrogenLetter;
+    //Stores a bond type (single bond, double bond, triple bond)
     String bondType = "";
+    //The base carbon chain, and its length
     Element[] baseChain;
-    ArrayList<Element> elements = new ArrayList();
     int chainLen;
+    //Elements in the chemical
+    ArrayList<Element> elements = new ArrayList();
     
-    public ElementName(String n, String hl) {
+    
+    public ChemicalName(String n, String hl) {
         this.input = n.toLowerCase();
         this.hydrogenLetter = hl;
+        this.generateMap();
     }
     
     public void generateMap(){
-        //Here we set up initial variables for calculations
+        //Creates the map of elements in the chemical into the elements array
+        
+        
         if (this.input.equals("dextrose")){
+            //Dextrose does not follow default bond locations, it is a special exception
             createDextrose();
             return;
         }
+        //Set up initial variables for calculations
         String[] splitName = input.split(" ");
         int numBranches = splitName.length;        
         String last = splitName[numBranches-1];
@@ -28,11 +38,11 @@ public class ElementName {
         String[] splitBranches;
         String[] baseBonds;
         boolean addAcid = false;
-        //Set up bonds by default to be single
 
         
-        //Some elements end with "-oic acid", so splitting on " " will miss the base chain
+        //Some names end with "-oic acid", note the space
         if (last.contains("acid")){
+            //Gets the base chain
             try {
                 base = splitName[numBranches-2];
             } catch (Exception e) {
@@ -43,6 +53,7 @@ public class ElementName {
             base = splitName[numBranches-1];
         }
         
+        //Converts space characters to dashes for parsing
         for (int i=0; i<numBranches; i++){
             if (splitName[i].equals(base)){
                 break;
@@ -51,7 +62,7 @@ public class ElementName {
         }
 
         
-        //Here we take its name and determine how many carbons are in the main chain
+        //Take the name and determine how many carbons are in the main chain
         if (base.contains("meth"))
             chainLen = 1;
         else if (base.contains("eth"))
@@ -73,28 +84,35 @@ public class ElementName {
         else if (base.contains("dec"))
             chainLen = 10;
         else{
+            //Stop the program from running bad input
             System.out.printf("\"%s\" is not a real base\n", base);
             return;
         }
         
+        //Set up arrays with chain length
         baseChain = new Element[chainLen];
         baseBonds = new String[chainLen];
+        //Bonds not specified in the IUPAC name are single bonds by default
         for (int i=0; i<chainLen; i++){
             baseBonds[i] = "single";
         }
-        //The base chain is an Element[] for easy access, the carbons are added to it
+        //Place down the row which is the base chain
         int x = 325 - 25*chainLen;
         for (int i=0; i<chainLen; i++){
+            //Only the position of the first carbon matters, all others will be
+            //modified when it is bonded to in Element.bondTo from the Element class
             baseChain[i] = new Element(x, 350, "Carbon");
-            x += 40;
         }
         
         
         //Bonds in the base chain are not necessarily all single bonds
         String[] name = base.split("-");
+        
+        //Finds double bonds in the main chain
         if (base.contains("ene")){
             for(int i=0; i<name.length; i++){
                 if (name[i].contains("ene")){
+                    //num will store the location of the double bonds
                     int[] num;
                     try {
                         num = parseNumbers(name[i-1]);
@@ -102,6 +120,8 @@ public class ElementName {
                         num = new int[] {0};
                     }
                     for (int j=0; j<num.length; j++){
+                        //Some names cause too many bonds on a carbon, which is illegal
+                        //The input was invalid, and the program assumes a single bond instead
                         if (num[j] == chainLen-1){
                             System.out.printf("Cannot place a bond following carbon #%d\n", chainLen);
                         } else if (num[j] != -1){
@@ -111,6 +131,7 @@ public class ElementName {
                 }
             }
         }
+        //Uses the same process to find triple bonds in the main chain
         if (base.contains("yne")){
             for(int i=0; i<name.length; i++){
                 if (name[i].contains("yne")){
@@ -121,6 +142,8 @@ public class ElementName {
                         num = new int[] {0};
                     }
                     for (int j=0; j<num.length; j++){
+                        //Some names cause too many bonds on a carbon, which is illegal
+                        //The input was invalid, and the program assumes a single bond instead
                         if (num[j] == chainLen-1){
                             System.out.printf("Cannot place a bond following carbon #%d\n", chainLen);
                         } else if (num[j] != -1){
@@ -131,18 +154,21 @@ public class ElementName {
             }
         }
 
-        //Now add all the bonds in the base chain
+        //Adds all the bonds in the base chain
         for (int i=0; i<chainLen-1; i++){
             if (baseChain[i].canBondTo(baseChain[i+1], baseBonds[i])) {
                 baseChain[i].bondTo(baseChain[i+1], baseBonds[i], 3);
             } else {
+                //Error message here should not need to run, just a safety measure
                 System.out.printf("Cannot add a %s bond following carbon %d\n", baseBonds[i], i+1);
                 baseChain[i].bondTo(baseChain[i+1], "single", 3);
             }
         }
         
-        //Add primary branch to the chain
+        //Add primary branch information to the branches information
         if (addAcid){
+            //Adds the carboxylic acid group to the first carbon, which is always
+            //the location of a carboxylic acid group
             Element Oxygen = new Element("Oxygen");
             Element Hydroxyl = new Element("Hydroxyl-R");
             baseChain[0].bondTo(Oxygen, "double", 0);
@@ -150,64 +176,79 @@ public class ElementName {
             elements.add(Oxygen);
             elements.add(Hydroxyl);
         }
+        //Takes the name of the base chain and gives it to the branch name
+        //so that every branch can be processed in the same loop
         for (int i=0; i<name.length; i++){
             String numbers;
             try {
+                //Some numbers will be specified in the name
                 numbers = name[i-1];
             } catch (Exception e){
+                //Others assume carbon #1, or can only be carbon #1
                 numbers = "1";
             }
-            //if the previous information was not a specific number
+            //if the previous information was not a specific number, the number
+            //should be assumed as carbon #1
             if (numbers.matches("^[^0-9]+$")){
                 numbers = "1";
             }
-            if (name[i].contains("ol")){
+            if (name[i].contains("ol")){        //alcohol was the primary branch
                 String chain = numbers + "-hydroxyl-";
                 branches = chain + branches;
             }
-            if (name[i].contains("al")){
-                String chain = "carbonyl-";
+            if (name[i].contains("al")){        //aldehyde was the primary branch
+                String chain = "carbonyl-";     //aldehydes have no number
                 branches = chain + branches;
             }
-            if (name[i].contains("amine")){
+            if (name[i].contains("amine")){     //amine was the primary branch
                 String chain = numbers + "-amino-";
                 branches = chain + branches;
             }
-            if (name[i].contains("one")){
+            if (name[i].contains("one")){       //ketone was the primary branch
                 String chain = numbers + "-carbonyl-";
                 branches = chain + branches;
             }
         }
         
+        //split the branches into an array to be looped through
         splitBranches = branches.split("-");
         
-        //Adding the branches to the carbons
+        //Adding the branches to the carbons:
         for (int i=0; i<splitBranches.length; i++){
-            //if the string matches regex for no digits in [0, 9], then it is a branch name
+            //if the string matches regular expression for no digits in [0, 9]
+            //then it must be a branch name, otherwise it carries no valuable information
             if (splitBranches[i].matches("^[^0-9]+$")){
                 int[] n;
                 try{
-                    n = parseNumbers(splitBranches[i-1]); //Number precedes branch name 
+                    n = parseNumbers(splitBranches[i-1]); //Numbers precede branch name 
                 } catch(Exception e){
-                    n = new int[] {0}; //Assume carbon #1 by default
+                    n = new int[] {0}; //Assume carbon #1 by default if there were no numbers
                 }
+                
+                //Uses the branch name and the numbers to determine which element should be added
                 String nextName = parseName(splitBranches[i], n);
+                
+                //Alkyl branches are handled separately, and nextName is empty
                 if (!nextName.isEmpty()){
                     for (int j=0; j<n.length; j++){
-                        //Add a new element off screen with no bond position
                         if (n[j] == -1){
+                            //Handles cases where the name specified too many bonds to a carbon
                             continue;
                         }
                         Element next = new Element(nextName);
                         int q = baseChain[n[j]].nextFreeTop();
                         if (q == -1){
-                            System.out.println("This cannot be made");
+                            System.out.printf("There aren't enough free bonds to place a(n) %s to carbon #%d\n",
+                                    nextName.toLowerCase(), n[j]+1);
                         } else {
+                            //Reverse the lettering of a backwards group with more than one element letter
                             if (next.name.equals("Hydroxyl") && q == 2){
                                 next.letter = "HO";
                             } else if (next.name.equals("Amino") && q == 2){
                                 next.letter = "H\u2082N";
                             }
+                            
+                            //Add the bond and add the bonded element to the elements arraylist
                             baseChain[n[j]].bondTo(next, bondType, q);
                             elements.add(next);
                         }
@@ -216,14 +257,16 @@ public class ElementName {
             }
         }
         
+        //Add all the base chain to the arraylist
         for (int i=0; i<chainLen; i++){
             elements.add(baseChain[i]);
         }
 
-        //Add Hydrogens to bonded sites
+        //Adds Hydrogens to unbonded sites
         Element[] e = getElementArray();
         for (int i=0; i<e.length; i++){
             if (e[i].name.equals("carbon")){
+                //Determines the number of hydrogens to bond to the carbon
                 int n = 4-e[i].numBonds();
                 for (int j=0; j<n; j++){
                     Element H = new Element("Hydrogen");
@@ -235,58 +278,62 @@ public class ElementName {
         }
     }
     
-    
     public void createDextrose(){
+        //Creates the special case of drawing dextrose
+        
+        //Add a hexane chain
         baseChain = new Element[6];
         chainLen = 6;
-        int x = 325 - 20*chainLen;
+        int x = 325 - 25*chainLen;
         for (int i=0; i<chainLen; i++){
             baseChain[i] = new Element(x, 350, "Carbon");
-            x += 40;
         }
 
         for (int i=0; i<chainLen-1; i++){
-            try{
-                baseChain[i].bondTo(baseChain[i+1], "single", 3);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            baseChain[i].bondTo(baseChain[i+1], "single", 3);
         }
         
+        
+        //Dextrose is an aldehyde, add the oxygen
         Element oxygen = new Element("Oxygen");
         baseChain[0].bondTo(oxygen, "double", 2);
         elements.add(oxygen);
 
-        //Adding the branches to the carbons
+        //Adding the hydroxyl branches to the carbons
+        //They are in strict locations, in the array below
         int[] hydroxyOrder = {0, 1, 0, 0, 0};
+        //Thankfully, I can hardcode the information here and bond it
         for (int i=1; i<6; i++){
             Element hydroxy = new Element("Hydroxyl");
             baseChain[i].bondTo(hydroxy, "single", hydroxyOrder[i-1]);
             elements.add(hydroxy);
         }
 
-        //Add Hydrogens to bonded sites
-        for (int i=0; i<chainLen; i++){
-            int n = 4-baseChain[i].numBonds();
-                for (int j=0; j<n; j++){
-                Element H = new Element(-10, -10, "Hydrogen");
-                    H.letter = hydrogenLetter;
-                baseChain[i].bondTo(H, "single", baseChain[i].nextFree());
-                    elements.add(H);
-                }
-            }
-        
+        //Adds the carbons to the elements array
         for (int i=0; i<chainLen; i++){
             elements.add(baseChain[i]);
+        }
+
+        //Add Hydrogens to unbonded sites
+        for (int i=0; i<chainLen; i++){
+            int n = 4-baseChain[i].numBonds();
+            for (int j=0; j<n; j++){
+                Element H = new Element(-10, -10, "Hydrogen");
+                H.letter = hydrogenLetter;
+                baseChain[i].bondTo(H, "single", baseChain[i].nextFree());
+                elements.add(H);
+            }
         }
     }
     
     public int[] parseNumbers(String a){
+        //Takes a string like "1" or "2,2,3" and returns the int[] array
         String[] a0 = a.split(",");
         int[] n = new int [a0.length];
         for (int i=0; i<a0.length; i++){
             n[i] = Integer.parseInt(a0[i]) - 1;
             if (n[i] >= chainLen || n[i] < 0){
+                //gives an error number of -1 if the number is invalid
                 System.out.printf("\"%d\" is not a valid carbon number\n", n[i]+1);
                 n[i] = -1;
             }
@@ -295,7 +342,9 @@ public class ElementName {
     }
     
     public String parseName(String a, int[] n){
-        String name;
+        //Takes the branch name and converts it into the element name or
+        //keeps it as the branch name for branches with multiple elements
+        String name = "";
         if (a.contains("fluoro")){
             name = "Fluorine";
             bondType = "single";
@@ -325,24 +374,18 @@ public class ElementName {
             name = "";
         } else if (a.contains("propyl")){
             addAlkylBranch(3, n);
-            name = "";
-        } else if (a.contains("isopropyl")){
-            name = "";
         } else if (a.contains("butyl")){
             addAlkylBranch(4, n);
-            name = "";
-        } else if (a.contains("secbutyl")){
-            name = "";
-        } else if (a.contains("isobutyl")){
-            name = "";
         } else {
             System.out.printf("\"%s\" could not be added as a branch\n", a);
-            name = "";
         }
         return name;
     }
 
     public void addAlkylBranch(int l, int[] pos){
+        //Adds an alkyl branch (which has length > 1) to the base chain
+        
+        //Array which stores the last carbons, bonds it to the base chain
         Element[] nextCarbon = new Element[pos.length];
         for (int i=0; i<pos.length; i++){
             nextCarbon[i] = new Element("Carbon");
@@ -350,8 +393,11 @@ public class ElementName {
             elements.add(nextCarbon[i]);
         }
         
+        //Adds more carbons to the alkyl branch until it reaches the branch length
         for (int i=0; i<pos.length; i++){
             for (int j=1; j<l; j++){
+                //Makes a new carbon, and bonds it to the last added carbon
+                //then resets the last added carbon to prepare for the next carbon
                 Element nextC = new Element("Carbon");
                 nextCarbon[i].bondTo(nextC, "single", nextCarbon[i].nextFreeTopB());
                 nextCarbon[i] = nextC;
@@ -361,6 +407,7 @@ public class ElementName {
     } 
     
     public Element[] getElementArray(){
+        //Converts each element in the arraylist to an element in a new array
         int l = elements.size();
         Object[] objects = elements.toArray();
         Element[] e0 = new Element[l];
