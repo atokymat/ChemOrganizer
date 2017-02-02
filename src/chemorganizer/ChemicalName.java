@@ -139,7 +139,29 @@ public class ChemicalName {
         //Finds double bonds in the main chain
         if (base.contains("en")){
             for(int i=0; i<name.length; i++){
-                if (name[i].contains("en")){
+                if (name[i].contains("pent")){
+                    //Matching for the very specific case where "pent" contains "en"
+                    //and "en" also means add a double bond
+                    if (name[i].matches(".*en.*en.*")){
+                        int[] num;
+                        try {
+                            num = parseNumbers(name[i-1]);
+                        } catch (Exception e){
+                            output = output + "Cannot place a bond following carbon #1<br>";
+                             continue;
+                        }
+                        for (int j=0; j<num.length; j++){
+                            //Some names cause too many bonds on a carbon, which is illegal
+                            //The input was invalid, and the program assumes a single bond instead
+                            if (num[j] == chainLen-1){
+                                output = output + String.format("Cannot place a bond following carbon #%d<br>", chainLen);
+                            } else if (num[j] != -1){
+                                baseBonds[num[j]] = "double";
+                            }
+                        }
+                    }
+                }
+                else if (name[i].contains("en")){
                     //num will store the location of the double bonds
                     int[] num;
                     try {
@@ -182,6 +204,18 @@ public class ChemicalName {
             }
         }
 
+        //Add primary branch information to the branches information
+        if (addAcid){
+            //Adds the carboxylic acid group to the first carbon, which is always
+            //the location of a carboxylic acid group
+            Element Oxygen = new Element("Oxygen");
+            Element Hydroxyl = new Element("Hydroxyl-R");
+            baseChain[0].bondTo(Oxygen, "double", 0);
+            baseChain[0].bondTo(Hydroxyl, "single", 2);
+            elements.add(Oxygen);
+            elements.add(Hydroxyl);
+        }
+        
         //Adds all the bonds in the base chain
         for (int i=0; i<chainLen-1; i++){
             if (baseChain[i].canBondTo(baseChain[i+1], baseBonds[i])) {
@@ -194,17 +228,6 @@ public class ChemicalName {
             }
         }
         
-        //Add primary branch information to the branches information
-        if (addAcid){
-            //Adds the carboxylic acid group to the first carbon, which is always
-            //the location of a carboxylic acid group
-            Element Oxygen = new Element("Oxygen");
-            Element Hydroxyl = new Element("Hydroxyl-R");
-            baseChain[0].bondTo(Oxygen, "double", 0);
-            baseChain[0].bondTo(Hydroxyl, "single", 2);
-            elements.add(Oxygen);
-            elements.add(Hydroxyl);
-        }
         //Takes the name of the base chain and gives it to the branch name
         //so that every branch can be processed in the same loop
         for (int i=0; i<name.length; i++){

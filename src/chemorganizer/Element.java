@@ -76,7 +76,7 @@ public class Element {
         } else {
             n = 3;
         }
-        return this.numBonds()+n <= this.maxBonds && e.numBonds()+n <= e.maxBonds;
+        return (this.numBonds()+n <= this.maxBonds) && (e.numBonds()+n <= e.maxBonds);
     }
     
     public void bondTo(Element e, String type, int location){   
