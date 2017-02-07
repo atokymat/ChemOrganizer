@@ -40,10 +40,10 @@ public class ChemGUI extends javax.swing.JFrame {
         presetBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        outputLabel = new javax.swing.JLabel();
         presetButton = new javax.swing.JButton();
         showH = new javax.swing.JCheckBox();
         resetButton = new javax.swing.JButton();
+        outputLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,8 +79,6 @@ public class ChemGUI extends javax.swing.JFrame {
         jLabel2.setText("Use Preset:");
 
         jLabel1.setText("Type an IUPAC name:");
-        
-        outputLabel.setText("Words");
 
         presetButton.setText("Draw Preset");
         presetButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -116,7 +114,7 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(presetButton)
@@ -143,32 +141,28 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(resetButton))
         );
-        
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());		
-        getContentPane().setLayout(layout);		
-        layout.setHorizontalGroup(		
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
-            .addGroup(layout.createSequentialGroup()		
-                .addComponent(drawingPanel, 618, 618, javax.swing.GroupLayout.PREFERRED_SIZE)		
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
-                    .addGroup(layout.createSequentialGroup()		
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)		
-                        .addComponent(outputLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)		
-                        .addGap(194, 194, 194))		
-                    .addGroup(layout.createSequentialGroup()		
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)		
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)		
-                        .addContainerGap())))		
-        );		
-        layout.setVerticalGroup(		
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
-            .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)		
-            .addGroup(layout.createSequentialGroup()		
-                .addContainerGap()		
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)		
-                .addGap(18, 18, 18)		
-                .addComponent(outputLabel)		
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))		
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(drawingPanel, 618, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(outputLabel))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(outputLabel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -380,9 +374,9 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JPanel drawingPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel outputLabel;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel outputLabel;
     private javax.swing.JComboBox presetBox;
     private javax.swing.JButton presetButton;
     private javax.swing.JButton resetButton;
