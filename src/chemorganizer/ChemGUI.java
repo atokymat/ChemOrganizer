@@ -40,6 +40,7 @@ public class ChemGUI extends javax.swing.JFrame {
         presetBox = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        outputLabel = new javax.swing.JLabel();
         presetButton = new javax.swing.JButton();
         showH = new javax.swing.JCheckBox();
         resetButton = new javax.swing.JButton();
@@ -352,6 +353,7 @@ public class ChemGUI extends javax.swing.JFrame {
     private javax.swing.JPanel drawingPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel outputLabel;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox presetBox;
