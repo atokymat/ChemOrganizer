@@ -143,6 +143,33 @@ public class ChemGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(resetButton))
         );
+        
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());		
+        getContentPane().setLayout(layout);		
+        layout.setHorizontalGroup(		
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
+            .addGroup(layout.createSequentialGroup()		
+                .addComponent(drawingPanel, 618, 618, javax.swing.GroupLayout.PREFERRED_SIZE)		
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
+                    .addGroup(layout.createSequentialGroup()		
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)		
+                        .addComponent(outputLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)		
+                        .addGap(194, 194, 194))		
+                    .addGroup(layout.createSequentialGroup()		
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)		
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)		
+                        .addContainerGap())))		
+        );		
+        layout.setVerticalGroup(		
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)		
+            .addComponent(drawingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)		
+            .addGroup(layout.createSequentialGroup()		
+                .addContainerGap()		
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)		
+                .addGap(18, 18, 18)		
+                .addComponent(outputLabel)		
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))		
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
