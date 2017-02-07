@@ -205,6 +205,9 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="outputLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="label"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
