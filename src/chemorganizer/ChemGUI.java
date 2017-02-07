@@ -79,6 +79,8 @@ public class ChemGUI extends javax.swing.JFrame {
         jLabel2.setText("Use Preset:");
 
         jLabel1.setText("Type an IUPAC name:");
+        
+        outputLabel.setText("Label");
 
         presetButton.setText("Draw Preset");
         presetButton.addMouseListener(new java.awt.event.MouseAdapter() {
